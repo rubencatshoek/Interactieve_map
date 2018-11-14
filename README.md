@@ -1,2 +1,2 @@
-# interactieve_map
+# Interactieve map
 Het interactieve map project voor het Kanaaleiland van Sas van Gent
