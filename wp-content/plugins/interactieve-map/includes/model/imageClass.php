@@ -22,6 +22,7 @@ class imageClass
      */
     private $image;
 
+
     /**
      * @return int
      */
@@ -52,5 +53,12 @@ class imageClass
     public function setImage($image)
     {
         $this->image = $image;
+    }
+
+    public function create ($input_array) {
+        //Calling $wpdb
+        global $wpdb;
+
+
     }
 }

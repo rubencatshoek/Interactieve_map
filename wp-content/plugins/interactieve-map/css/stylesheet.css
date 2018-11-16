@@ -22,6 +22,16 @@
     color: white;
 }
 
+input[type=text], select {
+    width: 25%;
+    padding: 10px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 .icon-edit {
     width: 37px;
     height: 35px;
@@ -35,4 +45,16 @@
 .uploaded-icon {
     width: 35px;
     height: 35px;
+}
+
+.button-style {
+    background-color: #009d45;
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
 }

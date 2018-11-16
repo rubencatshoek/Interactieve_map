@@ -33,6 +33,16 @@ class checkpointClass
     private $icon;
 
     /**
+     * @var imageClass
+     */
+    private $imageClass;
+
+    public function __construct()
+    {
+        $this->imageClass = new imageClass();
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -114,6 +124,61 @@ class checkpointClass
         }
 
         return $return_array;
+    }
+
+//Insert into database
+    public function create($input_array) {
+        //Exception handeling
+        try {
+            //Calling $wpdb
+            global $wpdb;
+
+            // Insert query
+            $wpdb->insert(
+                $wpdb->prefix . 'im_checkpoint',
+                array(
+                    'title' => $input_array['title'],
+                    'description' => $input_array['description'],
+                    'icon_path' => $input_array['icon']
+                ),
+                array(
+                    '%s',
+                    '%s',
+                    '%s'
+                )
+            );
+
+            $getLastId = $wpdb->insert_id;
+
+            // Insert query
+            $wpdb->insert(
+                $wpdb->prefix . 'im_image',
+                array(
+                    'fk_checkpoint_id' => $getLastId ,
+                    'image_path' => $input_array['image']
+                ),
+                array(
+                    '%d',
+                    '%s'
+                )
+            );
+
+
+            // Error ? It's in there:
+            if ( ! empty( $wpdb->last_error ) ) {
+                $this->last_error = $wpdb->last_error;
+
+                return false;
+            }
+
+        } //If there are errors catch them and echo them
+        catch ( Exception $exc ) {
+            echo '<pre>' . $exc->getTraceAsString() . '</pre>';
+        }
+
+        //Return true if there are no errors
+        return true;
+
     }
 
     public function update() {
