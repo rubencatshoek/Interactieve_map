@@ -18,6 +18,10 @@ class Interactievemap_AdminController {
 		if ( is_admin() ) :
 			// Add the sidebar Menu structure
 			add_action( 'admin_menu', array( 'Interactievemap_AdminController', 'addMenus' ) );
+
+			add_action( 'admin_enqueue_scripts', array( 'Interactievemap_AdminController', 'load_custom_style' ) );
+
+			add_action('admin_enqueue_scripts', array('Interactievemap_AdminController', 'load_custom_js'));
 		endif;
 	}
 
@@ -108,5 +112,22 @@ class Interactievemap_AdminController {
 	static function adminSubMenuIMOverview() {
 		// include the view for this submenu page.
 		include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_overview.php';
+	}
+
+	function load_custom_style( $hook ) {
+		//If $hook isn't one of these pages it will return and stop enqueuing and registering
+		var_dump($hook);
+		if ($hook != 'interactieve-map_page_im_admin_checkpoint_overview' &&
+			$hook != 'interactieve-map_page_im_admin_checkpoint_add' &&
+			$hook != 'interactieve-map_page_im_admin_checkpoint_edit') {
+			return;
+		}
+		// Enqueue the stylsheet into Wordpress
+		wp_enqueue_style( 'custom_wp_admin_css', plugins_url( 'interactieve-map/css/stylesheet.css', dirname( FILE ) ) );
+	}
+
+	function load_custom_js()
+	{
+		wp_enqueue_script('custom-js', plugins_url('interactieve-map/includes/jquery.js', dirname(FILE)));
 	}
 }

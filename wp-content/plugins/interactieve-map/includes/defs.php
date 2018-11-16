@@ -8,7 +8,7 @@
  * @version 0.1 16-10-2017
  */
 
-// De versie moet gelijk zijn met het versie nummer in de interactieve-map.php header
+// Version control
 define('INTERACTIEVE_MAP_VERSION', '0.0.1');
 
 // Minimum required Wordpress version for this plugin
@@ -30,4 +30,6 @@ define('INTERACTIEVE_MAP_PLUGIN_MODEL_DIR', INTERACTIEVE_MAP_PLUGIN_INCLUDES_DIR
 define('INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR', INTERACTIEVE_MAP_PLUGIN_DIR . '/admin');
 
 define('INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR', INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . '/views');
+
+define('INTERACTIEVE_MAP_PLUGIN_IMAGES', INTERACTIEVE_MAP_PLUGIN_DIR . '/images');
 

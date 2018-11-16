@@ -1,0 +1,38 @@
+/*This is the custom stylesheet*/
+#checkpoint-overzicht {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 99%;
+}
+
+#checkpoint-overzicht td, #checkpoint-overzicht th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#checkpoint-overzicht tr:nth-child(even){background-color: #f2f2f2;}
+
+#checkpoint-overzicht tr:hover {background-color: #ddd;}
+
+#checkpoint-overzicht th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #009d45;
+    color: white;
+}
+
+.icon-edit {
+    width: 37px;
+    height: 35px;
+}
+
+.icon-delete {
+    width: 37px;
+    height: 35px;
+}
+
+.uploaded-icon {
+    width: 35px;
+    height: 35px;
+}
