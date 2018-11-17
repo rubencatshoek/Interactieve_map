@@ -106,9 +106,31 @@ class checkpointClass
         $this->icon = $icon;
     }
 
-    public function getList() {
+    //
+    public function getById($id) {
+        //Calling wpdb
         global $wpdb;
+        //Database query
+        $result_array = $wpdb->get_row( "SELECT * FROM " . $wpdb->prefix . "im_checkpoint WHERE checkpoint_id = $id", ARRAY_A );
+        // New object
+        $checkpoint = new checkpointClass();
+        // Set all info
+        $checkpoint->setId( $result_array['checkpoint_id'] );
+        $checkpoint->setTitle( $result_array['title'] );
+        $checkpoint->setDescription( $result_array['description'] );
+        $checkpoint->setIcon( $result_array['icon_path'] );
+        // Add new object toe return array.
+        $return_object = $checkpoint;
+        //Return the object
+        return $return_object;
+    }
+
+    public function getList() {
+        //Calling wpdb
+        global $wpdb;
+        //Setting var as an array
         $return_array = array();
+        //Database query
         $result_array = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "im_checkpoint ORDER BY checkpoint_id", ARRAY_A );
         // For all database results:
         foreach ( $result_array as $idx => $array ) {
@@ -119,7 +141,7 @@ class checkpointClass
             $checkpoint->setTitle( $array['title'] );
             $checkpoint->setDescription( $array['description'] );
             $checkpoint->setIcon( $array['icon_path'] );
-            // Add new object toe return array.
+            // Add new object to return array.
             $return_array[] = $checkpoint;
         }
 
@@ -154,7 +176,7 @@ class checkpointClass
             $wpdb->insert(
                 $wpdb->prefix . 'im_image',
                 array(
-                    'fk_checkpoint_id' => $getLastId ,
+                    'fk_checkpoint_id' => $getLastId,
                     'image_path' => $input_array['image']
                 ),
                 array(
@@ -181,9 +203,60 @@ class checkpointClass
 
     }
 
-    public function update() {
-        echo ("update");
-        die;
+    public function update($input_array) {
+        //Exception handeling
+        try {
+            //Calling $wpdb
+            global $wpdb;
+
+            // Insert query
+            $wpdb->update(
+                $wpdb->prefix . 'im_checkpoint',
+                array(
+                    'title' => $input_array['title'],
+                    'description' => $input_array['description'],
+                    'icon_path' => $input_array['icon']
+                ),
+                array(
+                    'checkpoint_id' => $input_array['id']),
+                array(
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s'
+                )
+            );
+
+            // Insert query
+            $wpdb->update(
+                $wpdb->prefix . 'im_image',
+                array(
+                    'image_path' => $input_array['image']
+                ),
+                array(
+                    'fk_checkpoint_id' => $input_array['id']),
+                array(
+                    '%s',
+                    '%d'
+                )
+            );
+
+
+            // Error ? It's in there:
+            if ( ! empty( $wpdb->last_error ) ) {
+                $this->last_error = $wpdb->last_error;
+
+                return false;
+            }
+
+        } //If there are errors catch them and echo them
+        catch ( Exception $exc ) {
+            echo '<pre>' . $exc->getTraceAsString() . '</pre>';
+        }
+
+        //Return true if there are no errors
+        return true;
+
     }
 
     public function delete($id) {

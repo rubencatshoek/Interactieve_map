@@ -80,6 +80,21 @@ class Interactievemap_AdminController {
 			'im_admin_checkpoint_add',
 			// callback $function The function to be called to output the content for this page .
 			array( 'Interactievemap_AdminController', 'adminSubMenuIMAdd' ) );
+
+        add_submenu_page(
+        // string $parent_slug The slug name for the parent menu
+        // (or the file name of a standard WordPress admin page)
+            'NULL',
+            // string $page_title The text to be displayed in the title tags of the page when the menu is selected
+            __( 'checkpoint wijzigen', 'interactieve-map' ),
+            // string $menu_title The text to be used for the menu
+            __( 'Checkpoint wijzigen', 'interactieve-map' ),
+            // string $capability The capability required for this menu to be displayed to the user .
+            'manage_options',
+            // string $menu_slug The slug name to refer to this menu by (should be unique for this menu)
+            'im_admin_checkpoint_edit',
+            // callback $function The function to be called to output the content for this page .
+            array( 'Interactievemap_AdminController', 'adminSubMenuIMEdit' ) );
 	}
 
 	/**
@@ -97,6 +112,14 @@ class Interactievemap_AdminController {
 		// include the view for this submenu page.
 		include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_add.php';
 	}
+
+    /**
+     * The submenu page to add a checkpoint
+     */
+    static function adminSubMenuIMEdit() {
+        // include the view for this submenu page.
+        include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_edit.php';
+    }
 
 //	/**
 //	 * The submenu page to edit a checkpoint
@@ -116,10 +139,9 @@ class Interactievemap_AdminController {
 
 	function load_custom_style( $hook ) {
 		//If $hook isn't one of these pages it will return and stop enqueuing and registering
-		var_dump($hook);
 		if ($hook != 'interactieve-map_page_im_admin_checkpoint_overview' &&
 			$hook != 'interactieve-map_page_im_admin_checkpoint_add' &&
-			$hook != 'interactieve-map_page_im_admin_checkpoint_edit') {
+			$hook != 'admin_page_im_admin_checkpoint_edit') {
 			return;
 		}
 		// Enqueue the stylsheet into Wordpress
