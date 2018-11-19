@@ -261,11 +261,14 @@ class checkpointClass
 
     public function delete($id) {
         global $wpdb;
+
         $table = 'wp_im_checkpoint';
         $where = ['checkpoint_id' => $id];
         $format = ['%d'];
 
-        return $wpdb->delete($table, $where, $format);
+        $wpdb->delete( 'wp_im_image', array( 'fk_checkpoint_id' => $id), array( '%d' ) );
+
+        $wpdb->delete($table, $where, $format);
     }
 
 }

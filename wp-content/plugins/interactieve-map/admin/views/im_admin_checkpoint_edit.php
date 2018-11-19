@@ -15,6 +15,8 @@ $input_array = $_POST;
 
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     $checkpoints->update($input_array);
+    echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
+    exit;
 }
 ?>
 <form method="post">

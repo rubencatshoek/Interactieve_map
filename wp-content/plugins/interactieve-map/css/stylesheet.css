@@ -33,8 +33,9 @@ input[type=text], select {
 }
 
 .icon-edit {
-    width: 37px;
-    height: 35px;
+    width: 32px;
+    height: 33px;
+    margin-bottom: 1%;
 }
 
 .icon-delete {
