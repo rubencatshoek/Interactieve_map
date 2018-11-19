@@ -149,7 +149,7 @@ class checkpointClass
     }
 
 //Insert into database
-    public function create($input_array) {
+    public function create($input_array, $fileName) {
         //Exception handeling
         try {
             //Calling $wpdb
@@ -161,7 +161,7 @@ class checkpointClass
                 array(
                     'title' => $input_array['title'],
                     'description' => $input_array['description'],
-                    'icon_path' => $input_array['icon']
+                    'icon_path' => $fileName
                 ),
                 array(
                     '%s',
@@ -203,43 +203,61 @@ class checkpointClass
 
     }
 
-    public function update($input_array) {
+    public function update($input_array, $fileName) {
         //Exception handeling
         try {
             //Calling $wpdb
             global $wpdb;
 
             // Insert query
+            if (isset($fileName) && !empty($fileName)) {
+                $wpdb->update(
+                    $wpdb->prefix . 'im_checkpoint',
+                    array(
+                        'title' => $input_array['title'],
+                        'description' => $input_array['description'],
+                        'icon_path' => $fileName
+                    ),
+                    array(
+                        'checkpoint_id' => $input_array['id']),
+                    array(
+                        '%s',
+                        '%s',
+                        '%s',
+                        '%s'
+                    )
+                );
+            } else {
             $wpdb->update(
                 $wpdb->prefix . 'im_checkpoint',
                 array(
                     'title' => $input_array['title'],
-                    'description' => $input_array['description'],
-                    'icon_path' => $input_array['icon']
+                    'description' => $input_array['description']
                 ),
                 array(
                     'checkpoint_id' => $input_array['id']),
                 array(
                     '%s',
                     '%s',
-                    '%s',
                     '%s'
                 )
             );
+            }
 
-            // Insert query
-            $wpdb->update(
-                $wpdb->prefix . 'im_image',
-                array(
-                    'image_path' => $input_array['image']
-                ),
-                array(
-                    'fk_checkpoint_id' => $input_array['id']),
-                array(
-                    '%s',
-                    '%d'
-                )
-            );
+            if (isset($input_array['image']) && !empty($input_array['image'])) {
+                $wpdb->update(
+                    $wpdb->prefix . 'im_image',
+                    array(
+                        'image_path' => $input_array['image']
+                    ),
+                    array(
+                        'fk_checkpoint_id' => $input_array['id']),
+                    array(
+                        '%s',
+                        '%d'
+                    )
+                );
+            }
 
 
             // Error ? It's in there:
