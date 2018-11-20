@@ -149,7 +149,7 @@ class checkpointClass
     }
 
 //Insert into database
-    public function create($input_array, $fileName) {
+    public function create($input_array, $fileName, $imageFileName) {
         //Exception handeling
         try {
             //Calling $wpdb
@@ -170,21 +170,25 @@ class checkpointClass
                 )
             );
 
+            $test = count($imageFileName);
+
             $getLastId = $wpdb->insert_id;
 
-            // Insert query
-            $wpdb->insert(
-                $wpdb->prefix . 'im_image',
-                array(
-                    'fk_checkpoint_id' => $getLastId,
-                    'image_path' => $input_array['image']
-                ),
-                array(
-                    '%d',
-                    '%s'
-                )
-            );
+            for( $i=0 ; $i < $test ; $i++ ) {
 
+                // Insert query
+                $wpdb->insert(
+                    $wpdb->prefix . 'im_image',
+                    array(
+                        'fk_checkpoint_id' => $getLastId,
+                        'image_path' => $imageFileName[$i]
+                    ),
+                    array(
+                        '%d',
+                        '%s'
+                    )
+                );
+            }
 
             // Error ? It's in there:
             if ( ! empty( $wpdb->last_error ) ) {

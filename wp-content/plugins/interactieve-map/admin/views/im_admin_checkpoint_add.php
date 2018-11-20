@@ -29,12 +29,41 @@ $fileType = $_FILES['icon']['type'];
 // Refers extension of file
 $fileExtension = strtolower(end(explode('.',$fileName)));
 
+
+// FOR SAVING MULTIPLE IMAGES
+// Directory for saving images
+$imageUploadDirectory = "/uploaded_images/images/";
+
 // Shows where to place the uploaded file
 $uploadPath = $upOne . $uploadDirectory . basename($fileName);
 
-// If $_POST not empty
-if (isset($input_array['submit']) && !empty($input_array['submit'])) {
+// Refers to uploaded image file names and counts the amount of images uploaded
+$imageFileName = ($_FILES['image']['name']);
 
+//$files = array_filter($_FILES['upload']['name']); //something like that to be used before processing files.
+
+// Count # of uploaded files in array
+$total = count($_FILES['image']['name']);
+
+// Loop through each file
+for( $i=0 ; $i < $total ; $i++ ) {
+
+    //Get the temp file path
+    $tmpFilePath = $_FILES['image']['tmp_name'][$i];
+
+    //Make sure we have a file path
+    if ($tmpFilePath != ""){
+        //Setup our new file path
+        $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
+
+        //Upload the file into the temp dir
+        if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+            //Handle other code here
+        }
+    }
+}
+// If submit
+if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If uploaded file doesn't match the available extensions
     if (! in_array($fileExtension,$fileExtensions)) {
         $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
@@ -42,7 +71,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
     // If upload file is too big (2MB)
     if ($fileSize > 2000000) {
-        $errors[] = "Het bestand kan niet groten zijn dan 2mb.";
+        $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
     }
 
     // If no errors are found
@@ -51,7 +80,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
         // If file has been uploaded, start create function and redirect to overview page after that
         if ($didUpload) {
-            $checkpoints->create($input_array, $fileName);
+            $checkpoints->create($input_array, $fileName, $imageFileName);
             echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
             exit;
         } else {
@@ -82,7 +111,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     </div>
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
-        <input type="file" id="image" name="image"/>
+        <input type="file" id="image" multiple="multiple" name="image[]"/>
     </div> <br>
     <div class="grid-x cell">
         <input type="submit" class="button-style" name="submit" value="Aanmaken">

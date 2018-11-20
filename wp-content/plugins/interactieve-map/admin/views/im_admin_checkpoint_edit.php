@@ -38,7 +38,7 @@ $fileExtension = strtolower(end(explode('.',$fileName)));
 // Shows where to place the uploaded file
 $uploadPath = $upOne . $uploadDirectory . basename($fileName);
 
-// If $_POST not empty
+// If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If no file is uploaded, don't active checks for uploaded file
     if (empty($fileName)) {
@@ -56,7 +56,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
     // If upload file is too big (2MB)
     if ($fileSize > 2000000) {
-        $errors[] = "Het bestand kan niet groten zijn dan 2mb.";
+        $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
     }
 
     // If no errors are found
