@@ -43,6 +43,37 @@ $fileExtension = strtolower(end(explode('.',$fileName)));
 // Shows where to place the uploaded file
 $uploadPath = $upOne . $uploadDirectory . basename($fileName);
 
+// FOR SAVING MULTIPLE IMAGES
+// Directory for saving images
+$imageUploadDirectory = "/uploaded_images/images/";
+
+// Shows where to place the uploaded file
+$uploadPath = $upOne . $uploadDirectory . basename($fileName);
+
+// Refers to uploaded image file names and counts the amount of images uploaded
+$imageFileName = ($_FILES['image']['name']);
+
+// Count # of uploaded files in array
+$total = count($_FILES['image']['name']);
+
+// Loop through each file
+for( $i=0 ; $i < $total ; $i++ ) {
+
+    //Get the temp file path
+    $tmpFilePath = $_FILES['image']['tmp_name'][$i];
+
+    //Make sure we have a file path
+    if ($tmpFilePath != ""){
+        //Setup our new file path
+        $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
+
+        //Upload the file into the temp dir
+        if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+            //Handle other code here
+        }
+    }
+}
+
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If no file is uploaded, don't active checks for uploaded file

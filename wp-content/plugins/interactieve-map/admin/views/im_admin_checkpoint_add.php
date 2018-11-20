@@ -40,8 +40,6 @@ $uploadPath = $upOne . $uploadDirectory . basename($fileName);
 // Refers to uploaded image file names and counts the amount of images uploaded
 $imageFileName = ($_FILES['image']['name']);
 
-//$files = array_filter($_FILES['upload']['name']); //something like that to be used before processing files.
-
 // Count # of uploaded files in array
 $total = count($_FILES['image']['name']);
 
