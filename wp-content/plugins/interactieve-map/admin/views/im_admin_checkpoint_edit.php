@@ -57,6 +57,7 @@ $imageFileName = ($_FILES['image']['name']);
 $total = count($_FILES['image']['name']);
 
 // Loop through each file
+if ($total > 0) {
 for( $i=0 ; $i < $total ; $i++ ) {
 
     //Get the temp file path
@@ -69,16 +70,16 @@ for( $i=0 ; $i < $total ; $i++ ) {
 
         //Upload the file into the temp dir
         if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-            //Handle other code here
         }
     }
+}
 }
 
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If no file is uploaded, don't active checks for uploaded file
     if (empty($fileName)) {
-        $checkpoints->update($input_array, $fileName);
+        $checkpoints->update($input_array, $fileName, $imageFileName);
         echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
         exit;
     }
@@ -101,7 +102,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
         // If file has been uploaded, start create function and redirect to overview page after that
         if ($didUpload) {
-            $checkpoints->update($input_array, $fileName);
+            $checkpoints->update($input_array, $fileName, $imageFileName);
             echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
             exit;
         } else {
@@ -139,7 +140,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     </div>
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
-        <input type="file" id="image" name="image"/>
+        <input type="file" id="image" multiple="multiple" name="image[]"/>
         <?php
         foreach ($singleImage as $image) {
             echo'<form method="post">' .

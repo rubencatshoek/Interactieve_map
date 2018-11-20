@@ -207,7 +207,7 @@ class checkpointClass
 
     }
 
-    public function update($input_array, $fileName) {
+    public function update($input_array, $fileName, $imageFileName) {
         //Exception handeling
         try {
             //Calling $wpdb
@@ -259,6 +259,26 @@ class checkpointClass
                     array(
                         '%s',
                         '%d'
+                    )
+                );
+            }
+
+            $imageAmount = count($imageFileName);
+
+
+
+            for( $i=0 ; $i < $imageAmount ; $i++ ) {
+
+                // Insert query
+                $wpdb->insert(
+                    $wpdb->prefix . 'im_image',
+                    array(
+                        'fk_checkpoint_id' => $input_array['id'],
+                        'image_path' => $imageFileName[$i]
+                    ),
+                    array(
+                        '%d',
+                        '%s'
                     )
                 );
             }
