@@ -55,10 +55,35 @@ class imageClass
         $this->image = $image;
     }
 
-    public function create ($input_array) {
-        //Calling $wpdb
+    public function getById($id) {
+        //Calling wpdb
+        global $wpdb;
+        //Setting var as an array
+        $return_array = array();
+        //Database query
+        $result_array = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "im_image WHERE fk_checkpoint_id = $id", ARRAY_A );
+
+        foreach ($result_array as $idx => $array) {
+            // New object
+            $image = new imageClass();
+
+            // Set all info
+            $image->setId( $array['image_id'] );
+            $image->setImage( $array['image_path'] );
+
+            // Add new object to return array.
+            $return_array[] = $image;
+        }
+        return $return_array;
+    }
+
+    public function delete($input_array) {
         global $wpdb;
 
+        $table = 'wp_im_image';
+        $where = ['image_id' => $input_array['image_id']];
+        $format = ['%d'];
 
+        $wpdb->delete($table, $where, $format);
     }
 }

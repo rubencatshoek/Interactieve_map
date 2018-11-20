@@ -170,11 +170,11 @@ class checkpointClass
                 )
             );
 
-            $test = count($imageFileName);
-
             $getLastId = $wpdb->insert_id;
 
-            for( $i=0 ; $i < $test ; $i++ ) {
+            $imageAmount = count($imageFileName);
+
+            for( $i=0 ; $i < $imageAmount ; $i++ ) {
 
                 // Insert query
                 $wpdb->insert(

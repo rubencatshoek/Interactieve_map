@@ -5,11 +5,16 @@ include INTERACTIEVE_MAP_PLUGIN_MODEL_DIR . "/checkpointClass.php";
 // Declare class variable:
 $checkpoints = new checkpointClass();
 
+// Declare class variable:
+$images = new imageClass();
+
 $id = $_GET['id'];
 
 $checkpointList = $checkpoints->getList();
 
 $singleCheckpoint = $checkpoints->getById($id);
+
+$singleImage = $images->getById($id);
 
 // Putting the post values in a variable
 $input_array = $_POST;
@@ -79,11 +84,18 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     }
 }
 }
+
+if (isset($_POST['delete']) && !empty($_POST['delete'])) {
+    $images->delete($input_array);
+    echo '<script>location.href=window.location.search;</script>';
+    exit;
+}
 ?>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="wijzigen">
     <div class="grid-x cell">
         <h2>Checkpoint wijzigen</h2>
         <label for="title">Titel:</label><br>
+        <input type="hidden" id="id" name="id" value="<?= $singleCheckpoint->getId(); ?>" required/>
         <input type="text" id="title" name="title" value="<?= $singleCheckpoint->getTitle(); ?>" required/>
     </div>
     <div class="grid-x cell">
@@ -97,9 +109,17 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
         <input type="file" id="image" name="image"/>
+        <?php
+        foreach ($singleImage as $image) {
+            echo'<form method="post">' .
+                '<br>' . $image->getImage() .
+                '<input type="hidden" name="single_image" value="' . $image->getImage() .'">' .
+                '<input type="hidden" name="image_id" value="' . $image->getId() .'">' .
+                '<input type="submit" name="delete" value="Verwijderen">' .
+                '</form>';
+        };?>
     </div> <br>
     <div class="grid-x cell">
-        <input type="hidden" id="id" name="id" value="<?= $singleCheckpoint->getId(); ?>" required/>
-        <input type="submit" class="button-style" name="submit" value="Wijzigen">
+        <input type="submit" class="button-style" name="submit" form="wijzigen" value="Wijzigen">
     </div>
 </form>
