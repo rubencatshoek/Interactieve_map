@@ -174,8 +174,8 @@ class checkpointClass
 
             $imageAmount = count($imageFileName);
 
-            for( $i=0 ; $i < $imageAmount ; $i++ ) {
 
+            for( $i=0 ; $i < $imageAmount ; $i++ ) {
                 // Insert query
                 $wpdb->insert(
                     $wpdb->prefix . 'im_image',
@@ -263,24 +263,33 @@ class checkpointClass
                 );
             }
 
+            $updateImageFileName = '';
+
+            foreach ($imageFileName as $key => $value) {
+                $value = trim($value);
+                if (!empty($value)) {
+                    $updateImageFileName = true;
+                }
+            }
+
             $imageAmount = count($imageFileName);
 
+            if ($updateImageFileName === true) {
+                for ($i = 0; $i < $imageAmount; $i++) {
 
-
-            for( $i=0 ; $i < $imageAmount ; $i++ ) {
-
-                // Insert query
-                $wpdb->insert(
-                    $wpdb->prefix . 'im_image',
-                    array(
-                        'fk_checkpoint_id' => $input_array['id'],
-                        'image_path' => $imageFileName[$i]
-                    ),
-                    array(
-                        '%d',
-                        '%s'
-                    )
-                );
+                    // Insert query
+                    $wpdb->insert(
+                        $wpdb->prefix . 'im_image',
+                        array(
+                            'fk_checkpoint_id' => $input_array['id'],
+                            'image_path' => $imageFileName[$i]
+                        ),
+                        array(
+                            '%d',
+                            '%s'
+                        )
+                    );
+                }
             }
 
 

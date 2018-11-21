@@ -22,7 +22,7 @@
     color: white;
 }
 
-input[type=text], select {
+.input-style {
     width: 25%;
     padding: 10px 10px;
     margin: 8px 0;
@@ -58,4 +58,8 @@ input[type=text], select {
     display: inline-block;
     margin: 4px 2px;
     cursor: pointer;
+}
+
+.space {
+    padding-top: 10px;
 }

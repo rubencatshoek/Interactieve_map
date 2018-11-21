@@ -128,11 +128,11 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
         <h2>Checkpoint wijzigen</h2>
         <label for="title">Titel:</label><br>
         <input type="hidden" id="id" name="id" value="<?= $singleCheckpoint->getId(); ?>" required/>
-        <input type="text" id="title" name="title" value="<?= $singleCheckpoint->getTitle(); ?>" required/>
+        <input type="text" class="input-style" id="title" name="title" value="<?= $singleCheckpoint->getTitle(); ?>" required/>
     </div>
     <div class="grid-x cell">
         <label for="description">Beschrijving:</label><br>
-        <textarea type="text" id="description" name="description" rows="5" cols="43"><?= $singleCheckpoint->getDescription(); ?></textarea>
+        <textarea type="text" class="input-style"  id="description" name="description" rows="5" cols="43"><?= $singleCheckpoint->getDescription(); ?></textarea>
     </div>
     <div class="grid-x cell">
         <label for="icon">Icoon:</label><br>
@@ -140,14 +140,16 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     </div>
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
-        <input type="file" id="image" multiple="multiple" name="image[]"/>
+        <input type="file" id="image" multiple="multiple" name="image[]"/><br>
+    </div>
+    <div class="grid-x cell space">
         <?php
         foreach ($singleImage as $image) {
             echo'<form method="post">' .
-                '<br>' . $image->getImage() .
+                '<input type="submit" name="delete" value="Verwijderen">' .
+                $image->getImage() . '<br>' .
                 '<input type="hidden" name="single_image" value="' . $image->getImage() .'">' .
                 '<input type="hidden" name="image_id" value="' . $image->getId() .'">' .
-                '<input type="submit" name="delete" value="Verwijderen">' .
                 '</form>';
         };?>
     </div> <br>

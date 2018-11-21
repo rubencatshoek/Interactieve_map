@@ -96,11 +96,11 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     <div class="grid-x cell">
         <h2>Checkpoint aanmaken</h2>
         <label for="title">Titel:</label><br>
-        <input type="text" id="title" name="title" placeholder="Titel" required/>
+        <input type="text" class="input-style" id="title" name="title" placeholder="Titel" required/>
     </div>
     <div class="grid-x cell">
         <label for="description">Beschrijving:</label><br>
-        <textarea type="text" id="description" name="description" placeholder="Beschrijving"
+        <textarea type="text" class="input-style"  id="description" name="description" placeholder="Beschrijving"
                   rows="5" cols="43"></textarea>
     </div>
     <div class="grid-x cell">
