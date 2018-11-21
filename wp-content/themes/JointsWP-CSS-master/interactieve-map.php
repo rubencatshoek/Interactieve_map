@@ -2,34 +2,21 @@
 /*
 Template Name: Interactieve map
 */
+get_header();
+?>
 
-get_header(); ?>
+		<div class="inner-content grid-x">
 
-	<div class="content">
-
-		<div class="inner-content grid-x grid-margin-x grid-padding-x">
-
-		    <main class="main small-12 medium-12 large-12 cell" role="main">
-
-				<head>
-					<style>
-						/* Set the size of the div element that contains the map */
-						#map {
-							margin-top: 1%;
-							height: 600px;  /* The height is 400 pixels */
-							width: 100%;  /* The width is the width of the web page */
-						}
-					</style>
-				</head>
-				<body>
-				<!--The div element for the map -->
-				<div id="map"></div>
+		    <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
+					<div id="map"></div>
+				</main>
 				<script>
 					function initMap() {
 						// Styles a map in night mode.
 						var map = new google.maps.Map(document.getElementById('map'), {
 							center: {lat: 51.2276878, lng: 3.799993699999959},
 							zoom: 15,
+							disableDefaultUI: true,
 							styles: [
 								{
 									"elementType": "geometry",
@@ -297,14 +284,10 @@ get_header(); ?>
                 * The callback parameter executes the initMap() function
                 -->
 				<script async defer
-						src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbDKz8LkRCDtjtv0dWxfWOpiruMpxshIg&callback=initMap">
+						src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
 				</script>
-				</body>
-
-			</main> <!-- end #main -->
 
 		</div> <!-- end #inner-content -->
 
 	</div> <!-- end #content -->
-
-<?php get_footer(); ?>
+<?php get_footer()?>

@@ -48,12 +48,6 @@ class Interactievemap
             return;
         $plugin = isset($_REQUEST['plugin']) ? $_REQUEST['plugin'] : '';
         check_admin_referer("activate-plugin_{$plugin}");
-
-        // Add the theme capabilities
-        Interactievemap::add_plugin_caps();
-
-        # Uncomment the following line to see the function in action
-        # exit( var_dump( $_GET ) );
     }
 
     public static function on_deactivation()
@@ -62,12 +56,6 @@ class Interactievemap
             return;
         $plugin = isset($_REQUEST['plugin']) ? $_REQUEST['plugin'] : '';
         check_admin_referer("deactivate-plugin_{$plugin}");
-
-        // Remove the theme specific capabilities
-        Interactievemap::remove_plugin_caps();
-
-        # Uncomment the following line to see the function in action
-        # exit( var_dump( $_GET ) );
     }
 
     /**
