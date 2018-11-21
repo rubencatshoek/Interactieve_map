@@ -10,10 +10,13 @@ $images = new imageClass();
 
 $id = $_GET['id'];
 
+// Retrieve checkpoint list
 $checkpointList = $checkpoints->getList();
 
+// Retrieve checkpoint by id
 $singleCheckpoint = $checkpoints->getById($id);
 
+// Retrieve image by checkpoint id
 $singleImage = $images->getById($id);
 
 // Putting the post values in a variable
@@ -27,18 +30,18 @@ $uploadDirectory = "/uploaded_images/icons/";
 $errors = [];
 
 // Get the only useable file extensions
-$fileExtensions = ['jpeg','jpg','png'];
+$fileExtensions = ['jpeg', 'jpg', 'png'];
 
 // Refers to uploaded file name
 $fileName = $_FILES['icon']['name'];
 // Refers to file size
 $fileSize = $_FILES['icon']['size'];
 // Refers temporary name of directory in web server
-$fileTmpName  = $_FILES['icon']['tmp_name'];
+$fileTmpName = $_FILES['icon']['tmp_name'];
 // Refers to file type
 $fileType = $_FILES['icon']['type'];
 // Refers extension of file
-$fileExtension = strtolower(end(explode('.',$fileName)));
+$fileExtension = strtolower(end(explode('.', $fileName)));
 
 // Shows where to place the uploaded file
 $uploadPath = $upOne . $uploadDirectory . basename($fileName);
@@ -58,65 +61,66 @@ $total = count($_FILES['image']['name']);
 
 // Loop through each file
 if ($total > 0) {
-for( $i=0 ; $i < $total ; $i++ ) {
+    for ($i = 0; $i < $total; $i++) {
 
-    //Get the temp file path
-    $tmpFilePath = $_FILES['image']['tmp_name'][$i];
+        //Get the temp file path
+        $tmpFilePath = $_FILES['image']['tmp_name'][$i];
 
-    //Make sure we have a file path
-    if ($tmpFilePath != ""){
-        //Setup our new file path
-        $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
+        //Make sure we have a file path
+        if ($tmpFilePath != "") {
+            //Setup our new file path
+            $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
-        //Upload the file into the temp dir
-        if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+            //Upload the file into the temp dir
+            if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+            }
         }
     }
-}
 }
 
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If no file is uploaded, don't active checks for uploaded file
     if (empty($fileName)) {
+        // Refer to different update if no file has been uploaded
         $checkpoints->update($input_array, $fileName, $imageFileName);
         echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
         exit;
-    }
-    // If a file is uploaded, activate checks
+    } // If a file is uploaded, activate checks
     else {
 
-    // If uploaded file doesn't match the available extensions
-    if (! in_array($fileExtension,$fileExtensions)) {
-        $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
-    }
+        // If uploaded file doesn't match the available extensions
+        if (!in_array($fileExtension, $fileExtensions)) {
+            $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
+        }
 
-    // If upload file is too big (2MB)
-    if ($fileSize > 2000000) {
-        $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
-    }
+        // If upload file is too big (2MB)
+        if ($fileSize > 2000000) {
+            $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
+        }
 
-    // If no errors are found
-    if (empty($errors)) {
-        $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
+        // If no errors are found
+        if (empty($errors)) {
+            $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
-        // If file has been uploaded, start create function and redirect to overview page after that
-        if ($didUpload) {
-            $checkpoints->update($input_array, $fileName, $imageFileName);
-            echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
-            exit;
+            // If file has been uploaded, start create function and redirect to overview page after that
+            if ($didUpload) {
+                $checkpoints->update($input_array, $fileName, $imageFileName);
+                echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
+                exit;
+            } else {
+                echo "Kon bestand niet uploaden, probeer het opnieuw.";
+            }
         } else {
-            echo "Kon bestand niet uploaden, probeer het opnieuw.";
-        }
-    } else {
-        // If there are errors, echo them
-        foreach ($errors as $error) {
-            echo $error;
+            // If there are errors, echo them
+            foreach ($errors as $error) {
+                echo $error;
+            }
         }
     }
 }
-}
 
+// If clicked on delete button
 if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     $images->delete($input_array);
     echo '<script>location.href=window.location.search;</script>';
@@ -128,11 +132,13 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
         <h2>Checkpoint wijzigen</h2>
         <label for="title">Titel:</label><br>
         <input type="hidden" id="id" name="id" value="<?= $singleCheckpoint->getId(); ?>" required/>
-        <input type="text" class="input-style" id="title" name="title" value="<?= $singleCheckpoint->getTitle(); ?>" required/>
+        <input type="text" class="input-style" id="title" name="title" value="<?= $singleCheckpoint->getTitle(); ?>"
+               required/>
     </div>
     <div class="grid-x cell">
         <label for="description">Beschrijving:</label><br>
-        <textarea type="text" class="input-style"  id="description" name="description" rows="5" cols="43"><?= $singleCheckpoint->getDescription(); ?></textarea>
+        <textarea type="text" class="input-style" id="description" name="description" rows="5"
+                  cols="43"><?= $singleCheckpoint->getDescription(); ?></textarea>
     </div>
     <div class="grid-x cell">
         <label for="icon">Icoon:</label><br>
@@ -145,14 +151,15 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <div class="grid-x cell space">
         <?php
         foreach ($singleImage as $image) {
-            echo'<form method="post">' .
+            echo '<form method="post">' .
                 '<input type="submit" name="delete" value="Verwijderen">' .
                 $image->getImage() . '<br>' .
-                '<input type="hidden" name="single_image" value="' . $image->getImage() .'">' .
-                '<input type="hidden" name="image_id" value="' . $image->getId() .'">' .
+                '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
+                '<input type="hidden" name="image_id" value="' . $image->getId() . '">' .
                 '</form>';
-        };?>
-    </div> <br>
+        }; ?>
+    </div>
+    <br>
     <div class="grid-x cell">
         <input type="submit" class="button-style" name="submit" form="wijzigen" value="Wijzigen">
     </div>

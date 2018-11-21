@@ -121,13 +121,6 @@ class Interactievemap_AdminController {
         include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_edit.php';
     }
 
-//	/**
-//	 * The submenu page to edit a checkpoint
-//	 */
-//	static function adminSubMenuIMEdit() {
-//		// include the view for this submenu page.
-//		include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_edit.php';
-//	}
 
 	/**
 	 * The submenu page to view checkpoints

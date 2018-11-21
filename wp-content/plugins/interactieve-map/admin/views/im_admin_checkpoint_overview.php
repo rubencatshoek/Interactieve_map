@@ -11,6 +11,7 @@ $get_array = $checkpoints->getList();
 // Putting the id in a variable
 $id = $_POST['checkpoint_id'];
 
+// If clicked on delete button
 if (isset($_POST['delete_x']) && !empty($_POST['delete_x'])) {
     $checkpoints->delete($id);
     echo '<script>location.href=window.location.search;</script>';

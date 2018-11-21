@@ -55,6 +55,7 @@ class imageClass
         $this->image = $image;
     }
 
+    // Get images by foreign key id
     public function getById($id) {
         //Calling wpdb
         global $wpdb;
@@ -63,6 +64,7 @@ class imageClass
         //Database query
         $result_array = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "im_image WHERE fk_checkpoint_id = $id", ARRAY_A );
 
+        // Loop through images
         foreach ($result_array as $idx => $array) {
             // New object
             $image = new imageClass();
@@ -74,16 +76,21 @@ class imageClass
             // Add new object to return array.
             $return_array[] = $image;
         }
+        // Return array
         return $return_array;
     }
 
+    // Delete function
     public function delete($input_array) {
+        // Calling wpdb
         global $wpdb;
 
+        // Setting data into variables
         $table = 'wp_im_image';
         $where = ['image_id' => $input_array['image_id']];
         $format = ['%d'];
 
+        // Delete data
         $wpdb->delete($table, $where, $format);
     }
 }

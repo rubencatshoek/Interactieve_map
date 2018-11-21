@@ -37,6 +37,9 @@ class checkpointClass
      */
     private $imageClass;
 
+    /**
+     * checkpointClass constructor.
+     */
     public function __construct()
     {
         $this->imageClass = new imageClass();
@@ -106,7 +109,7 @@ class checkpointClass
         $this->icon = $icon;
     }
 
-    //
+    // Retrieve Checkpoint by id
     public function getById($id) {
         //Calling wpdb
         global $wpdb;
@@ -125,30 +128,31 @@ class checkpointClass
         return $return_object;
     }
 
+    // Retrieve all checkpoint information
     public function getList() {
         //Calling wpdb
         global $wpdb;
         //Setting var as an array
         $return_array = array();
         //Database query
-        $result_array = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "im_checkpoint ORDER BY checkpoint_id", ARRAY_A );
+        $result_array = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "im_checkpoint ORDER BY checkpoint_id", ARRAY_A);
         // For all database results:
-        foreach ( $result_array as $idx => $array ) {
+        foreach ($result_array as $idx => $array) {
             // New object
             $checkpoint = new checkpointClass();
             // Set all info
-            $checkpoint->setId( $array['checkpoint_id'] );
-            $checkpoint->setTitle( $array['title'] );
-            $checkpoint->setDescription( $array['description'] );
-            $checkpoint->setIcon( $array['icon_path'] );
+            $checkpoint->setId($array['checkpoint_id']);
+            $checkpoint->setTitle($array['title']);
+            $checkpoint->setDescription($array['description']);
+            $checkpoint->setIcon($array['icon_path']);
             // Add new object to return array.
             $return_array[] = $checkpoint;
         }
-
+        // Return the array
         return $return_array;
     }
 
-//Insert into database
+    //Insert into database
     public function create($input_array, $fileName, $imageFileName) {
         //Exception handeling
         try {
@@ -170,11 +174,13 @@ class checkpointClass
                 )
             );
 
+            // Get last id for foreign key
             $getLastId = $wpdb->insert_id;
 
+            // Count total images
             $imageAmount = count($imageFileName);
 
-
+            // Loop for inserting images
             for( $i=0 ; $i < $imageAmount ; $i++ ) {
                 // Insert query
                 $wpdb->insert(
@@ -193,7 +199,6 @@ class checkpointClass
             // Error ? It's in there:
             if ( ! empty( $wpdb->last_error ) ) {
                 $this->last_error = $wpdb->last_error;
-
                 return false;
             }
 
@@ -207,13 +212,14 @@ class checkpointClass
 
     }
 
+    // Update into database
     public function update($input_array, $fileName, $imageFileName) {
         //Exception handeling
         try {
             //Calling $wpdb
             global $wpdb;
 
-            // Insert query
+            // Insert query if not empty
             if (isset($fileName) && !empty($fileName)) {
                 $wpdb->update(
                     $wpdb->prefix . 'im_checkpoint',
@@ -232,6 +238,7 @@ class checkpointClass
                     )
                 );
             } else {
+            // Skip icon path update if empty
             $wpdb->update(
                 $wpdb->prefix . 'im_checkpoint',
                 array(
@@ -248,6 +255,7 @@ class checkpointClass
             );
             }
 
+            // If not empty image
             if (isset($input_array['image']) && !empty($input_array['image'])) {
                 $wpdb->update(
                     $wpdb->prefix . 'im_image',
@@ -263,17 +271,22 @@ class checkpointClass
                 );
             }
 
+            // Set empty var for later
             $updateImageFileName = '';
 
+            // Loop through imageFileName array to check for empty values
             foreach ($imageFileName as $key => $value) {
                 $value = trim($value);
                 if (!empty($value)) {
+                    // If no empty values are found, set true to use later
                     $updateImageFileName = true;
                 }
             }
 
+            // Count images
             $imageAmount = count($imageFileName);
 
+            // Loop image amount
             if ($updateImageFileName === true) {
                 for ($i = 0; $i < $imageAmount; $i++) {
 
@@ -292,11 +305,9 @@ class checkpointClass
                 }
             }
 
-
             // Error ? It's in there:
             if ( ! empty( $wpdb->last_error ) ) {
                 $this->last_error = $wpdb->last_error;
-
                 return false;
             }
 
@@ -310,15 +321,19 @@ class checkpointClass
 
     }
 
+    // Delete function
     public function delete($id) {
+        // Calling wpdb
         global $wpdb;
-
+        // Setting data into variables
         $table = 'wp_im_checkpoint';
         $where = ['checkpoint_id' => $id];
         $format = ['%d'];
 
+        // Delete foreign key attachments
         $wpdb->delete( 'wp_im_image', array( 'fk_checkpoint_id' => $id), array( '%d' ) );
 
+        // Delete data
         $wpdb->delete($table, $where, $format);
     }
 
