@@ -181,16 +181,7 @@ get_header();
                         "elementType": "geometry",
                         "stylers": [
                             {
-                                "color": "#e98d58"
-                            }
-                        ]
-                    },
-                    {
-                        "featureType": "road.highway.controlled_access",
-                        "elementType": "geometry.stroke",
-                        "stylers": [
-                            {
-                                "color": "#db8555"
+                                "color": "#fdfcf8"
                             }
                         ]
                     },
