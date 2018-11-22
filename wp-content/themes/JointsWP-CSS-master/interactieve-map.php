@@ -5,7 +5,7 @@ Template Name: Interactieve map
 get_header();
 ?>
 
-<div class="inner-content grid-x">
+<div class="inner-content">
 
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
         <div id="map"></div>

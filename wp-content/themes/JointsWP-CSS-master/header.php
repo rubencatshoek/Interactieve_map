@@ -34,7 +34,6 @@
         #map {
             height: 100%;
             width: auto;
-            overflow-y:hidden;
         }
         body {
             height: 100%; margin: 0px; padding: 0px
