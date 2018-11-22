@@ -1,4 +1,8 @@
 /*This is the custom stylesheet*/
+#wpbody-content {
+    font-family: 'Roboto Slab', serif;
+}
+
 #checkpoint-overzicht {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
