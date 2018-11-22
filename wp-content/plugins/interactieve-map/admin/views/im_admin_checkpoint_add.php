@@ -20,8 +20,6 @@ $fileExtensions = ['jpeg','jpg','png'];
 
 // Refers to uploaded file name
 $fileName = $_FILES['icon']['name'];
-// Refers to file size
-$fileSize = $_FILES['icon']['size'];
 // Refers temporary name of directory in web server
 $fileTmpName  = $_FILES['icon']['tmp_name'];
 // Refers to file type
@@ -44,19 +42,30 @@ $imageFileName = ($_FILES['image']['name']);
 $total = count($_FILES['image']['name']);
 
 // Loop through each file
-for( $i=0 ; $i < $total ; $i++ ) {
+for ($i = 0; $i < $total; $i++) {
+
+    // Refers extension of file
+    $imageFileExtension = strtolower(end(explode('.', $imageFileName[$i])));
 
     //Get the temp file path
     $tmpFilePath = $_FILES['image']['tmp_name'][$i];
 
     //Make sure we have a file path
-    if ($tmpFilePath != ""){
+    if ($tmpFilePath != "") {
+
         //Setup our new file path
         $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
-        //Upload the file into the temp dir
-        if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-            //Handle other code here
+        if (!in_array($imageFileExtension, $fileExtensions)) {
+            $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
+        }
+
+        // If no errors are found
+        if (empty($errors)) {
+            //Upload the file
+            $didImageUpload = move_uploaded_file($tmpFilePath, $newFilePath);
+        } else {
+            echo "Kon bestand niet uploaden, probeer het opnieuw." . '<br>';
         }
     }
 }
@@ -65,11 +74,6 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If uploaded file doesn't match the available extensions
     if (! in_array($fileExtension,$fileExtensions)) {
         $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
-    }
-
-    // If upload file is too big (2MB)
-    if ($fileSize > 2000000) {
-        $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
     }
 
     // If no errors are found
@@ -105,14 +109,31 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     </div>
     <div class="grid-x cell">
         <label for="icon">Icoon:</label><br>
-        <input type="file" id="icon" name="icon" required/>
+        <input type="file" id="icon" name="icon" accept="image/*" required/>
     </div>
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
-        <input type="file" id="image" multiple="multiple" name="image[]"/>
+        <input type="file" id="image" multiple="multiple" accept="image/*"  name="image[]"/>
     </div> <br>
     <div class="grid-x cell">
         <input type="submit" class="button-style" name="submit" value="Aanmaken">
     </div>
 </form>
+<script>
+    var imageField = document.getElementById("image");
+    imageField.onchange = function() {
+        if(this.files[0].size > 2000000){
+            alert("De afbeelding die je kiest is groter dan 2mb. Kies een ander bestand");
+            this.value = "";
+        }
+    };
+
+    var iconField = document.getElementById("icon");
+    icon.onchange = function() {
+        if(this.files[0].size > 2000000){
+            alert("De icon die je kiest is groter dan 2mb. Kies een ander bestand");
+            this.value = "";
+        }
+    };
+</script>
 

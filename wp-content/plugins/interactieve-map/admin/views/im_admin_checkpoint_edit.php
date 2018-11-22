@@ -26,16 +26,17 @@ $input_array = $_POST;
 $upOne = realpath(__DIR__ . '/..');
 $uploadDirectory = "/uploaded_images/icons/";
 
-// Store all foreseen and unforseen errors here
+// Store all icon foreseen and unforseen errors here
 $errors = [];
+
+// Store all image foreseen and unforseen errors here
+$imageErrors = '';
 
 // Get the only useable file extensions
 $fileExtensions = ['jpeg', 'jpg', 'png'];
 
 // Refers to uploaded file name
 $fileName = $_FILES['icon']['name'];
-// Refers to file size
-$fileSize = $_FILES['icon']['size'];
 // Refers temporary name of directory in web server
 $fileTmpName = $_FILES['icon']['tmp_name'];
 // Refers to file type
@@ -59,20 +60,35 @@ $imageFileName = ($_FILES['image']['name']);
 // Count # of uploaded files in array
 $total = count($_FILES['image']['name']);
 
+$emptyFileError = '';
+
 // Loop through each file
 if ($total > 0) {
-    for ($i = 0; $i < $total; $i++) {
+    for($i=0 ; $i < $total ; $i++) {
+
+        // Refers extension of file
+        $imageFileExtension = strtolower(end(explode('.',$imageFileName[$i])));
 
         //Get the temp file path
         $tmpFilePath = $_FILES['image']['tmp_name'][$i];
 
         //Make sure we have a file path
-        if ($tmpFilePath != "") {
+        if ($tmpFilePath != ""){
+
             //Setup our new file path
             $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
-            //Upload the file into the temp dir
-            if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+            if (! in_array($imageFileExtension,$fileExtensions)) {
+                $imageErrors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
+            }
+
+            // If no errors are found
+            if(empty($imageErrors)) {
+                //Upload the file
+                $didImageUpload = move_uploaded_file($tmpFilePath, $newFilePath);
+            } else {
+                $imageErrors = "Kon bestand niet uploaden, probeer het opnieuw. ";
+                echo ($imageErrors);
             }
         }
     }
@@ -81,26 +97,20 @@ if ($total > 0) {
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     // If no file is uploaded, don't active checks for uploaded file
-    if (empty($fileName)) {
+    if (empty($fileName) && (empty($imageErrors))) {
         // Refer to different update if no file has been uploaded
         $checkpoints->update($input_array, $fileName, $imageFileName);
         echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
         exit;
-    } // If a file is uploaded, activate checks
+    }
     else {
-
         // If uploaded file doesn't match the available extensions
         if (!in_array($fileExtension, $fileExtensions)) {
             $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
         }
 
-        // If upload file is too big (2MB)
-        if ($fileSize > 2000000) {
-            $errors[] = "Het bestand kan niet groter zijn dan 2mb.";
-        }
-
         // If no errors are found
-        if (empty($errors)) {
+        if (empty($errors) &&  empty($imageErrors)) {
             $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
             // If file has been uploaded, start create function and redirect to overview page after that
@@ -142,11 +152,11 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     </div>
     <div class="grid-x cell">
         <label for="icon">Icoon:</label><br>
-        <input type="file" id="icon" name="icon"/>
+        <input type="file" id="icon" accept="image/*"  name="icon"/>
     </div>
     <div class="grid-x cell">
         <label for="image">Uitgelichte afbeelding(en):</label><br>
-        <input type="file" id="image" multiple="multiple" name="image[]"/><br>
+        <input type="file" id="image" multiple="multiple" accept="image/*" name="image[]"/><br>
     </div>
     <div class="grid-x cell space">
         <?php
@@ -155,8 +165,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
                 '<input type="submit" name="delete" value="Verwijderen">' .
                 $image->getImage() . '<br>' .
                 '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
-                '<input type="hidden" name="image_id" value="' . $image->getId() . '">' .
-                '</form>';
+                '<input type="hidden" name="image_id" value="' . $image->getId() . '">';
         }; ?>
     </div>
     <br>
@@ -164,3 +173,20 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
         <input type="submit" class="button-style" name="submit" form="wijzigen" value="Wijzigen">
     </div>
 </form>
+<script>
+    var imageField = document.getElementById("image");
+    imageField.onchange = function() {
+        if(this.files[0].size > 2000000){
+            alert("De afbeelding die je kiest is groter dan 2mb. Kies een ander bestand");
+            this.value = "";
+        }
+    };
+
+    var iconField = document.getElementById("icon");
+    icon.onchange = function() {
+        if(this.files[0].size > 2000000){
+            alert("De icon die je kiest is groter dan 2mb. Kies een ander bestand");
+            this.value = "";
+        }
+    };
+</script>
