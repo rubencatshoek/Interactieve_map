@@ -180,20 +180,34 @@ class checkpointClass
             // Count total images
             $imageAmount = count($imageFileName);
 
+            // Set empty var for later
+            $updateImageFileName = '';
+
+            // Loop through imageFileName array to check for empty values
+            foreach ($imageFileName as $key => $value) {
+                $value = trim($value);
+                if (!empty($value)) {
+                    // If no empty values are found, set true to use later
+                    $updateImageFileName = true;
+                }
+            }
+
             // Loop for inserting images
-            for( $i=0 ; $i < $imageAmount ; $i++ ) {
-                // Insert query
-                $wpdb->insert(
-                    $wpdb->prefix . 'im_image',
-                    array(
-                        'fk_checkpoint_id' => $getLastId,
-                        'image_path' => $imageFileName[$i]
-                    ),
-                    array(
-                        '%d',
-                        '%s'
-                    )
-                );
+            if ($updateImageFileName === true) {
+                for ($i = 0; $i < $imageAmount; $i++) {
+                    // Insert query
+                    $wpdb->insert(
+                        $wpdb->prefix . 'im_image',
+                        array(
+                            'fk_checkpoint_id' => $getLastId,
+                            'image_path' => $imageFileName[$i]
+                        ),
+                        array(
+                            '%d',
+                            '%s'
+                        )
+                    );
+                }
             }
 
             // Error ? It's in there:
