@@ -171,6 +171,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <br>
     <div class="grid-x cell">
         <input type="submit" class="button-style" name="submit" form="wijzigen" value="Wijzigen">
+        <a href="?page=im_admin_checkpoint_overview"><input type="button" class="button-style-dark"  value="Terug naar overzicht"></a>
     </div>
 </form>
 <script>

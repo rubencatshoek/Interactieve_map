@@ -64,6 +64,18 @@
     cursor: pointer;
 }
 
+.button-style-dark {
+    background-color: #87888a;
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .space {
     padding-top: 10px;
 }
