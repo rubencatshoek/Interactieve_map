@@ -161,7 +161,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <div class="grid-x cell space">
         <?php
         foreach ($singleImage as $image) {
-            echo '<form method="post">' .
+            echo '<form method="post" id="test">' .
                 '<input type="submit" name="delete" value="Verwijderen">' .
                 $image->getImage() . '<br>' .
                 '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
