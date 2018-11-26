@@ -32,15 +32,15 @@ class Interactievemap_AdminController {
 		add_menu_page(
 		//string $page_title The text to be displayed in the title tags
 		//of the page when the menu is selected
-			__( 'Interactieve map Admin', 'interactieve-map' ),
+			'Interactieve map',
 		// string $menu_title The text to be used for the menu
-			__( 'Interactieve map', 'interactieve-map' ),
+			'Interactieve map',
 		//string $capability The capability required for this menu to be displayed to the user.
 			'manage_options',
 		//string $menu_slug The slug name to refer to this menu by (should be unique for this menu)
 			'interactieve-map-admin',
 		//callback $function The function to be called to output the content for this page.
-			array( 'Interactievemap_AdminController', 'adminMenuPage' ),
+			'',
 
 		//string $icon_url The url to the icon to be used for this menu.
 		//* Pass a base64-encoded SVG using a data URI, which will be colored to match the color scheme.
@@ -62,7 +62,7 @@ class Interactievemap_AdminController {
 			// string $capability The capability required for this menu to be displayed to the user .
 			'manage_options',
 			// string $menu_slug The slug name to refer to this menu by (should be unique for this menu)
-			'im_admin_checkpoint_overview',
+			'interactieve-map-admin',
 			// callback $function The function to be called to output the content for this page .
 			array( 'Interactievemap_AdminController', 'adminSubMenuIMOverview' ) );
 
@@ -132,7 +132,7 @@ class Interactievemap_AdminController {
 
 	function load_custom_style( $hook ) {
 		//If $hook isn't one of these pages it will return and stop enqueuing and registering
-		if ($hook != 'interactieve-map_page_im_admin_checkpoint_overview' &&
+		if ($hook != 'toplevel_page_interactieve-map-admin' &&
 			$hook != 'interactieve-map_page_im_admin_checkpoint_add' &&
 			$hook != 'admin_page_im_admin_checkpoint_edit') {
 			return;

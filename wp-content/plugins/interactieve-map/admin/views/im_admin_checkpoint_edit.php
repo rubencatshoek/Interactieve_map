@@ -100,7 +100,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     if (empty($fileName) && (empty($imageErrors))) {
         // Refer to different update if no file has been uploaded
         $checkpoints->update($input_array, $fileName, $imageFileName);
-        echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
+        echo '<script>location.href="?page=interactieve-map-admin";</script>';
         exit;
     }
     else {
@@ -116,7 +116,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
             // If file has been uploaded, start create function and redirect to overview page after that
             if ($didUpload) {
                 $checkpoints->update($input_array, $fileName, $imageFileName);
-                echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
+                echo '<script>location.href="?page=interactieve-map-admin";</script>';
                 exit;
             } else {
                 echo "Kon bestand niet uploaden, probeer het opnieuw.";
@@ -171,7 +171,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <br>
     <div class="grid-x cell">
         <input type="submit" class="button-style" name="submit" form="wijzigen" value="Wijzigen">
-        <a href="?page=im_admin_checkpoint_overview"><input type="button" class="button-style-dark"  value="Terug naar overzicht"></a>
+        <a href="?page=interactieve-map-admin"><input type="button" class="button-style-dark"  value="Terug naar overzicht"></a>
     </div>
 </form>
 <script>

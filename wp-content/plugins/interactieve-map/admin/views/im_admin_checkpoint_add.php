@@ -83,7 +83,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         // If file has been uploaded, start create function and redirect to overview page after that
         if ($didUpload) {
             $checkpoints->create($input_array, $fileName, $imageFileName);
-            echo '<script>location.href="?page=im_admin_checkpoint_overview";</script>';
+            echo '<script>location.href="?page=interactieve-map-admin";</script>';
             exit;
         } else {
             echo "Kon bestand niet uploaden, probeer het opnieuw.";
