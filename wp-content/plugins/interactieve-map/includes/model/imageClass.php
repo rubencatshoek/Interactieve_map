@@ -82,6 +82,20 @@ class imageClass
 
     // Delete function
     public function delete($input_array) {
+        // Shows where to remove the uploaded file
+        $uploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/images/";
+
+        // Get single image to delete
+        $image = $input_array['single_image'];
+
+        // Check if not empty image name
+        if (!empty($image)) {
+            (!unlink($uploadDirectory . $image));
+        } else {
+            // Echo error
+            echo("Er iets fout gegaan met het verwijderen van het bestand");
+        }
+
         // Calling wpdb
         global $wpdb;
 

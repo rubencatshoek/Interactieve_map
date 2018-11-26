@@ -165,7 +165,8 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
                 '<input type="submit" name="delete" value="Verwijderen">' .
                 $image->getImage() . '<br>' .
                 '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
-                '<input type="hidden" name="image_id" value="' . $image->getId() . '">';
+                '<input type="hidden" name="image_id" value="' . $image->getId() . '">' .
+                '</form>';
         }; ?>
     </div>
     <br>

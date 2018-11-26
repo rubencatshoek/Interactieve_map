@@ -337,6 +337,24 @@ class checkpointClass
 
     // Delete function
     public function delete($id) {
+        $getImageById = $this->imageClass->getById($id);
+
+        // Shows where to remove the uploaded file
+        $uploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/images/";
+
+        // Remove files if not empty
+        foreach ($getImageById as $array) {
+            $getImage = $array->getImage();
+            if (!empty($getImage))
+            {
+                (!unlink($uploadDirectory . $getImage));
+            }
+            else
+            {
+                echo ("Er iets fout gegaan met het verwijderen van het bestand");
+            }
+        }
+
         // Calling wpdb
         global $wpdb;
         // Setting data into variables
