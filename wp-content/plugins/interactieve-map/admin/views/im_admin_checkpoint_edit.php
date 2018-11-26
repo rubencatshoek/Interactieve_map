@@ -133,7 +133,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 // If clicked on delete button
 if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     $images->delete($input_array);
-    echo '<script>location.href=window.location.search;</script>';
+    echo '<script>window.history.back();</script>';
     exit;
 }
 ?>
@@ -161,7 +161,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <div class="grid-x cell space">
         <?php
         foreach ($singleImage as $image) {
-            echo '<form method="post" id="test">' .
+            echo '<form method="post">' .
                 '<input type="submit" name="delete" value="Verwijderen">' .
                 $image->getImage() . '<br>' .
                 '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
