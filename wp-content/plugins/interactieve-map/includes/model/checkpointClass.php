@@ -369,4 +369,18 @@ class checkpointClass
         $wpdb->delete($table, $where, $format);
     }
 
+    public function convertToJson ($checkpoints) {
+        $jsonData = [];
+
+        foreach ($checkpoints as $item) {
+            $jsonData[] = [
+                'id' => $item->getId(),
+                'title' => $item->getTitle(),
+                'description' => $item->getDescription(),
+                'icon' => $item->getIcon()
+            ];
+        }
+        return json_encode($jsonData);
+    }
+
 }

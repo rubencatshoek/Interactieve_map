@@ -2,7 +2,19 @@
 /*
 Template Name: Interactieve map
 */
+// Get the header
 get_header();
+// Include model:
+include INTERACTIEVE_MAP_PLUGIN_MODEL_DIR . "/checkpointClass.php";
+
+// Declare class variable:
+$checkpoints = new checkpointClass();
+
+// Get all Checkpoint information
+$getCheckpoints = $checkpoints->getList();
+
+// Convert all Checkpoints to JSON
+$jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
 ?>
 <div class="inner-content">
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
@@ -266,8 +278,9 @@ get_header();
                     }
                 ]
             });
+            var dir = '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/';
             var icon = {
-            url: '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/1AAAA.png',
+            url: dir + '1AAAA.png',
             scaledSize: new google.maps.Size(35, 35)
             };
 
@@ -278,23 +291,31 @@ get_header();
                 title: 'test'
             });
 
-            var contentString = '<div id="content">'+
+            var contentPopup = '<div id="content">'+
                 '<div id="siteNotice">'+
                 '</div>'+
-                '<h1 id="firstHeading" class="firstHeading">Titel</h1>'+
+                '<h2 id="firstHeading" class="firstHeading">Titel</h2>'+
                 '<div id="bodyContent">'+
                 '<p>Dit is een test voor de breedte, hoever kan de popup naar rechts schuiven? TEST TEST TEST TEST TEST TEST TEST JA' +
                 '</div>'+
                 '</div>';
 
             var infowindow = new google.maps.InfoWindow({
-                content: contentString
+                content: contentPopup
             });
 
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
             });
         }
+
+            var checkpoints = <?= $jsonCheckpoints ?>;
+
+            for (var idx in checkpoints) {
+                var checkpoint = checkpoints[idx];
+                console.log(checkpoint);
+                console.log(checkpoint.title);
+            }
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
