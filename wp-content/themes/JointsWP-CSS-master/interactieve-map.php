@@ -10,6 +10,8 @@ get_header();
     </main>
     <script>
         function initMap() {
+            var myLatLng = {lat: 51.2276878, lng: 3.799993699999959};
+
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 51.2276878, lng: 3.799993699999959},
                 zoom: 15,
@@ -263,6 +265,34 @@ get_header();
                         ]
                     }
                 ]
+            });
+            var icon = {
+            url: '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/1AAAA.png',
+            scaledSize: new google.maps.Size(35, 35)
+            };
+
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                icon: icon,
+                title: 'test'
+            });
+
+            var contentString = '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h1 id="firstHeading" class="firstHeading">Titel</h1>'+
+                '<div id="bodyContent">'+
+                '<p>Dit is een test voor de breedte, hoever kan de popup naar rechts schuiven? TEST TEST TEST TEST TEST TEST TEST JA' +
+                '</div>'+
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
             });
         }
     </script>
