@@ -4,15 +4,12 @@ Template Name: Interactieve map
 */
 get_header();
 ?>
-
 <div class="inner-content">
-
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
         <div id="map"></div>
     </main>
     <script>
         function initMap() {
-            // Styles a map in night mode.
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 51.2276878, lng: 3.799993699999959},
                 zoom: 15,
@@ -269,16 +266,9 @@ get_header();
             });
         }
     </script>
-    <!--Load the API from the specified URL
-    * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
-    * The callback parameter executes the initMap() function
-    -->
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
     </script>
-
-</div> <!-- end #inner-content -->
-
-</div> <!-- end #content -->
+</div>
+</div>
 <?php get_footer() ?>
