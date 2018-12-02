@@ -163,11 +163,15 @@ class checkpointClass
             $wpdb->insert(
                 $wpdb->prefix . 'im_checkpoint',
                 array(
+                    'latitude' => $input_array['latitude'],
+                    'longitude' => $input_array['longitude'],
                     'title' => $input_array['title'],
                     'description' => $input_array['description'],
                     'icon_path' => $fileName
                 ),
                 array(
+                    '%d',
+                    '%d',
                     '%s',
                     '%s',
                     '%s'
@@ -238,6 +242,8 @@ class checkpointClass
                 $wpdb->update(
                     $wpdb->prefix . 'im_checkpoint',
                     array(
+                        'latitude' => $input_array['latitude'],
+                        'longitude' => $input_array['longitude'],
                         'title' => $input_array['title'],
                         'description' => $input_array['description'],
                         'icon_path' => $fileName
@@ -245,6 +251,8 @@ class checkpointClass
                     array(
                         'checkpoint_id' => $input_array['id']),
                     array(
+                        '%d',
+                        '%d',
                         '%s',
                         '%s',
                         '%s',
@@ -256,12 +264,16 @@ class checkpointClass
             $wpdb->update(
                 $wpdb->prefix . 'im_checkpoint',
                 array(
+                    'latitude' => $input_array['latitude'],
+                    'longitude' => $input_array['longitude'],
                     'title' => $input_array['title'],
                     'description' => $input_array['description']
                 ),
                 array(
                     'checkpoint_id' => $input_array['id']),
                 array(
+                    '%d',
+                    '%d',
                     '%s',
                     '%s',
                     '%s'
