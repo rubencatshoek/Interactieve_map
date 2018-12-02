@@ -33,9 +33,19 @@ class checkpointClass
     private $icon;
 
     /**
-     * @var imageClass
+     * @var string
      */
     private $imageClass;
+
+    /**
+     * @var float
+     */
+    private $latitude;
+
+    /**
+     * @var float
+     */
+    private $longitude;
 
     /**
      * checkpointClass constructor.
@@ -75,6 +85,38 @@ class checkpointClass
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @param float $latitude
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @param float $longitude
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
     }
 
     /**
@@ -122,6 +164,8 @@ class checkpointClass
         $checkpoint->setTitle( $result_array['title'] );
         $checkpoint->setDescription( $result_array['description'] );
         $checkpoint->setIcon( $result_array['icon_path'] );
+        $checkpoint->setLatitude( $result_array['latitude']);
+        $checkpoint->setLongitude( $result_array['longitude']);
         // Add new object toe return array.
         $return_object = $checkpoint;
         //Return the object
@@ -145,6 +189,8 @@ class checkpointClass
             $checkpoint->setTitle($array['title']);
             $checkpoint->setDescription($array['description']);
             $checkpoint->setIcon($array['icon_path']);
+            $checkpoint->setLatitude($array['latitude']);
+            $checkpoint->setLongitude($array['longitude']);
             // Add new object to return array.
             $return_array[] = $checkpoint;
         }
@@ -170,8 +216,8 @@ class checkpointClass
                     'icon_path' => $fileName
                 ),
                 array(
-                    '%d',
-                    '%d',
+                    '%f',
+                    '%f',
                     '%s',
                     '%s',
                     '%s'
@@ -251,8 +297,8 @@ class checkpointClass
                     array(
                         'checkpoint_id' => $input_array['id']),
                     array(
-                        '%d',
-                        '%d',
+                        '%f',
+                        '%f',
                         '%s',
                         '%s',
                         '%s',
@@ -272,8 +318,8 @@ class checkpointClass
                 array(
                     'checkpoint_id' => $input_array['id']),
                 array(
-                    '%d',
-                    '%d',
+                    '%f',
+                    '%f',
                     '%s',
                     '%s',
                     '%s'

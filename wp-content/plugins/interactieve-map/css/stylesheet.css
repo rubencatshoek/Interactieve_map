@@ -79,3 +79,8 @@
 .space {
     padding-top: 10px;
 }
+
+#map {
+    width: 600px;
+    height: 400px;
+}
