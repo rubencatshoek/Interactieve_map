@@ -10,11 +10,16 @@ include INTERACTIEVE_MAP_PLUGIN_MODEL_DIR . "/checkpointClass.php";
 // Declare class variable:
 $checkpoints = new checkpointClass();
 
+// Declare class variable:
+$images = new imageClass();
+
 // Get all Checkpoint information
 $getCheckpoints = $checkpoints->getList();
 
 // Convert all Checkpoints to JSON
 $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
+
+var_dump($jsonCheckpoints);
 ?>
 <div class="inner-content">
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
@@ -22,8 +27,6 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
     </main>
     <script>
         function initMap() {
-            var myLatLng = {lat: 51.2276878, lng: 3.799993699999959};
-
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 51.2276878, lng: 3.799993699999959},
                 zoom: 15,
@@ -278,44 +281,52 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
                     }
                 ]
             });
-            var dir = '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/';
-            var icon = {
-            url: dir + '1AAAA.png',
-            scaledSize: new google.maps.Size(35, 35)
-            };
+            var dirIcons = '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/';
 
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                icon: icon,
-                title: 'test'
-            });
-
-            var contentPopup = '<div id="content">'+
-                '<div id="siteNotice">'+
-                '</div>'+
-                '<h2 id="firstHeading" class="firstHeading">Titel</h2>'+
-                '<div id="bodyContent">'+
-                '<p>Dit is een test voor de breedte, hoever kan de popup naar rechts schuiven? TEST TEST TEST TEST TEST TEST TEST JA' +
-                '</div>'+
-                '</div>';
-
-            var infowindow = new google.maps.InfoWindow({
-                content: contentPopup
-            });
-
-            marker.addListener('click', function() {
-                infowindow.open(map, marker);
-            });
-        }
+            var dirImages = '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/images/';
 
             var checkpoints = <?= $jsonCheckpoints ?>;
 
             for (var idx in checkpoints) {
                 var checkpoint = checkpoints[idx];
-                console.log(checkpoint);
-                console.log(checkpoint.title);
+
+                var myLatLng = new google.maps.LatLng(parseFloat(checkpoint.latitude), parseFloat(checkpoint.longitude));
+
+                var icon = {
+                    url: dirIcons + checkpoint.icon,
+                    scaledSize: new google.maps.Size(35, 35)
+                };
+
+                marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    icon: icon
+                });
+
+                var contentPopup =
+                    '<div id="content">'+
+                    '<input type="hidden" name="id" value="'+checkpoint.id+'">'+
+                    '<h2 id="titel">'+checkpoint.title+'</h2>'+
+                    '<div id="content">'+
+//                    '<img src="'+dirImages + checkpoint.image+'">'+
+                    '<p>'+checkpoint.description+'</p>'+
+                    '</div>'+
+                    '</div>';
+
+
+                infowindow = new google.maps.InfoWindow({
+                    content: contentPopup
+                });
+
+                //creates an infowindow 'key' in the marker.
+                marker.infowindow = infowindow;
+
+                //finally call the explicit infowindow object
+                marker.addListener('click', function() {
+                    return this.infowindow.open(map, this);
+                });
             }
+        }
     </script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">

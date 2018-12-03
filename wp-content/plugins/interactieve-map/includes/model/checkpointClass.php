@@ -431,14 +431,22 @@ class checkpointClass
         $jsonData = [];
 
         foreach ($checkpoints as $item) {
+            $getId = $item->getId();
+
+            var_dump($getId);
+
             $jsonData[] = [
                 'id' => $item->getId(),
                 'title' => $item->getTitle(),
                 'description' => $item->getDescription(),
-                'icon' => $item->getIcon()
+                'icon' => $item->getIcon(),
+                'latitude' => $item->getLatitude(),
+                'longitude' => $item->getLongitude(),
+                'image' => $this->imageClass->getById($getId)
             ];
+
+            var_dump($this->imageClass->getById($getId));
         }
         return json_encode($jsonData);
     }
-
 }
