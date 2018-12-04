@@ -78,6 +78,13 @@ if ($total > 0) {
             //Setup our new file path
             $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
+            // Check if filename already exists
+            if(file_exists($newFilePath)) {
+                echo '<script>alert("Een van de bestanden word al gebruikt of bestaan al.");</script>';
+                echo '<script>window.history.back();</script>';
+                exit;
+            }
+
             if (! in_array($imageFileExtension,$fileExtensions)) {
                 $imageErrors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
             }
@@ -104,6 +111,13 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         exit;
     }
     else {
+        // Check if filename already exists
+        if(file_exists($uploadPath)) {
+            echo '<script>alert("Dit bestaand word al gebruikt of het bestand bestaat al.");</script>';
+            echo '<script>window.history.back();</script>';
+            exit;
+        }
+
         // If uploaded file doesn't match the available extensions
         if (!in_array($fileExtension, $fileExtensions)) {
             $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";

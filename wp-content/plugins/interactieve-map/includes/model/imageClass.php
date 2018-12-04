@@ -108,15 +108,15 @@ class imageClass
         $wpdb->delete($table, $where, $format);
     }
 
-//    public function convertToJson ($images) {
-//        $jsonData = [];
-//
-//        foreach ($images as $item) {
-//            $jsonData[] = [
-//                'id' => $item->getId(),
-//                'image' => $item->getImage()
-//            ];
-//        }
-//        return json_encode($jsonData);
-//    }
+    public function convertToJson ($images) {
+        $jsonData = [];
+
+        foreach ($images as $item) {
+            $jsonData[] = [
+                'id' => $item->getId(),
+                'image' => $item->getImage()
+            ];
+        }
+        return json_encode($jsonData);
+    }
 }

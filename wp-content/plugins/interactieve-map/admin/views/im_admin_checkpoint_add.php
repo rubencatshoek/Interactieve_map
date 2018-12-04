@@ -56,6 +56,13 @@ for ($i = 0; $i < $total; $i++) {
         //Setup our new file path
         $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
+        // Check if filename already exists
+        if(file_exists($newFilePath)) {
+            echo '<script>alert("Een van de bestanden word al gebruikt of bestaan al.");</script>';
+            echo '<script>window.history.back();</script>';
+            exit;
+        }
+
         if (!in_array($imageFileExtension, $fileExtensions)) {
             $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
         }
@@ -69,8 +76,17 @@ for ($i = 0; $i < $total; $i++) {
         }
     }
 }
+
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
+
+    // Check if filename already exists
+    if(file_exists($uploadPath)) {
+        echo '<script>alert("Dit bestaand word al gebruikt of het bestand bestaat al.");</script>';
+        echo '<script>window.history.back();</script>';
+        exit;
+    }
+
     // If uploaded file doesn't match the available extensions
     if (! in_array($fileExtension,$fileExtensions)) {
         $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
@@ -105,9 +121,6 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     //Function called to initialize / create the map.
     //This is called when the page has loaded.
     function initMap() {
-
-        //The center location of our map.
-        var myLatLng = new google.maps.LatLng(51.2276878, 3.799993699999959);
 
         //Map options.
         var options = {
@@ -368,6 +381,15 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         //Create the map object.
         map = new google.maps.Map(document.getElementById('map'), options);
 
+        var getLocation = {lat: 51.22762817160363, lng: 3.799993699999959};
+
+        //Set current marker
+        marker = new google.maps.Marker({
+            position: getLocation,
+            map: map,
+            draggable: true //make it draggable
+        });
+
         //Listen for any clicks on the map.
         google.maps.event.addListener(map, 'click', function(event) {
             //Get the location that the user clicked.
@@ -412,10 +434,10 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     <div class="grid-x cell">
         <div id="map"></div>
         <label for="title">Locatie:</label><br>
-        <input type="text" class="input-style" id="lat" name="latitude" readonly/>
+        <input type="text" class="input-style" id="lat" name="latitude" value="51.22762817160363" readonly/>
     </div>
     <div class="grid-x cell">
-        <input type="text" class="input-style" id="lng" name="longitude" readonly/>
+        <input type="text" class="input-style" id="lng" name="longitude" value="3.799993699999959" readonly/>
     </div>
 
     <div class="grid-x cell">

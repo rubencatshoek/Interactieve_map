@@ -16,10 +16,20 @@ $images = new imageClass();
 // Get all Checkpoint information
 $getCheckpoints = $checkpoints->getList();
 
+$jsonImages = array();
+
+foreach ($getCheckpoints as $item) {
+    $id = $item->getId();
+
+    $getImages = $images->getById($id);
+
+    $jsonImages[] = $images->convertToJson($getImages);
+}
+
+var_dump($jsonImages);
+
 // Convert all Checkpoints to JSON
 $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
-
-var_dump($jsonCheckpoints);
 ?>
 <div class="inner-content">
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
@@ -287,6 +297,11 @@ var_dump($jsonCheckpoints);
 
             var checkpoints = <?= $jsonCheckpoints ?>;
 
+            var images = [<?= $jsonImages; ?>];
+
+
+            console.log(images);
+
             for (var idx in checkpoints) {
                 var checkpoint = checkpoints[idx];
 
@@ -308,6 +323,8 @@ var_dump($jsonCheckpoints);
                     '<input type="hidden" name="id" value="'+checkpoint.id+'">'+
                     '<h2 id="titel">'+checkpoint.title+'</h2>'+
                     '<div id="content">'+
+                        '<img class="mySlides" src="'+dirImages+'test.jpg" width="100px" height="100px">' +
+                        '<img class="mySlides" src="'+dirImages+'test2.jpg" width="100px" height="100px">' +
 //                    '<img src="'+dirImages + checkpoint.image+'">'+
                     '<p>'+checkpoint.description+'</p>'+
                     '</div>'+
