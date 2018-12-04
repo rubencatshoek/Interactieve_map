@@ -25,8 +25,10 @@ foreach ($getCheckpoints as $item) {
 
     $jsonImages[] = $images->convertToJson($getImages);
 }
-
+$jsonImg = json_encode($jsonImages);
+var_dump($jsonImg);
 var_dump($jsonImages);
+
 
 // Convert all Checkpoints to JSON
 $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
@@ -297,13 +299,17 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
 
             var checkpoints = <?= $jsonCheckpoints ?>;
 
-            var images = [<?= $jsonImages; ?>];
-
-
-            console.log(images);
+            var images = <?= $jsonImg ?>;
 
             for (var idx in checkpoints) {
                 var checkpoint = checkpoints[idx];
+
+                var image = images[idx];
+
+                var imgUrl = dirImages + images.image;
+                console.log(imgUrl);
+
+                console.log(image);
 
                 var myLatLng = new google.maps.LatLng(parseFloat(checkpoint.latitude), parseFloat(checkpoint.longitude));
 
@@ -319,15 +325,11 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
                 });
 
                 var contentPopup =
-                    '<div id="content">'+
+                    '<div class="">' +
+                    '<h2 id="titel" style="text-align: left;">'+checkpoint.title+'</h2>'+
+                    '<img width="100%;" style="max-height: 350px;" class="float-leftr" src="'+imgUrl+'">' +
                     '<input type="hidden" name="id" value="'+checkpoint.id+'">'+
-                    '<h2 id="titel">'+checkpoint.title+'</h2>'+
-                    '<div id="content">'+
-                        '<img class="mySlides" src="'+dirImages+'test.jpg" width="100px" height="100px">' +
-                        '<img class="mySlides" src="'+dirImages+'test2.jpg" width="100px" height="100px">' +
-//                    '<img src="'+dirImages + checkpoint.image+'">'+
-                    '<p>'+checkpoint.description+'</p>'+
-                    '</div>'+
+                    '<p style="text-align: left;">'+checkpoint.description+'</p>'+
                     '</div>';
 
 

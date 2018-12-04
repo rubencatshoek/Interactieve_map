@@ -37,8 +37,5 @@
             height: 100%;
             width: auto;
         }
-        body {
-            height: 100%; margin: 0px; padding: 0px
-        }
     </style>
 </head>
