@@ -16,24 +16,96 @@ $images = new imageClass();
 // Get all Checkpoint information
 $getCheckpoints = $checkpoints->getList();
 
-$jsonImages = array();
-
-foreach ($getCheckpoints as $item) {
-    $id = $item->getId();
-
-    $getImages = $images->getById($id);
-
-    $jsonImages[] = $images->convertToJson($getImages);
-}
-$jsonImg = json_encode($jsonImages);
-var_dump($jsonImg);
-var_dump($jsonImages);
-
-
 // Convert all Checkpoints to JSON
-$jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
+$jsonData = $checkpoints->convertToJson($getCheckpoints);
 ?>
-<div class="inner-content">
+<style>
+    html {
+        border-top: 5px solid #fff;
+        background: #58DDAF;
+        color: #2a2a2a;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        color: #fff;
+        text-align: center;
+        font-weight: 300;
+    }
+
+    #slider {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+
+    #slider ul {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        height: 200px;
+        list-style: none;
+    }
+
+    #slider ul li {
+        position: relative;
+        display: block;
+        float: left;
+        margin: 0;
+        padding: 0;
+        width: 500px;
+        height: 300px;
+        background: #ccc;
+        text-align: center;
+        line-height: 300px;
+    }
+
+    a.control_prev, a.control_next {
+        position: absolute;
+        top: 40%;
+        z-index: 999;
+        display: block;
+        padding: 4% 3%;
+        width: auto;
+        height: auto;
+        background: #2a2a2a;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 18px;
+        opacity: 0.8;
+        cursor: pointer;
+    }
+
+    a.control_prev:hover, a.control_next:hover {
+        opacity: 1;
+        -webkit-transition: all 0.2s ease;
+    }
+
+    a.control_prev {
+        border-radius: 0 2px 2px 0;
+    }
+
+    a.control_next {
+        right: 0;
+        border-radius: 2px 0 0 2px;
+    }
+</style>
+    <div id="slider">
+        <a href="#" class="control_next">></a>
+        <a href="#" class="control_prev"><</a>
+        <ul>
+            <li>SLIDE 1</li>
+            <li style="background: #aaa;">SLIDE 2</li>
+            <li>SLIDE 3</li>
+            <li style="background: #aaa;">SLIDE 4</li>
+        </ul>
+    </div>
+    <div class="inner-content">
     <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
         <div id="map"></div>
     </main>
@@ -297,19 +369,14 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
 
             var dirImages = '/interactieve_map/wp-content/plugins/interactieve-map/admin/uploaded_images/images/';
 
-            var checkpoints = <?= $jsonCheckpoints ?>;
+            var jsonData = <?= $jsonData ?>;
 
-            var images = <?= $jsonImg ?>;
+            for (var i = 0; i < jsonData.length; i++) {
+                var checkpoint = jsonData[i];
 
-            for (var idx in checkpoints) {
-                var checkpoint = checkpoints[idx];
+                var imgUrl = dirImages + checkpoint.images;
 
-                var image = images[idx];
-
-                var imgUrl = dirImages + images.image;
                 console.log(imgUrl);
-
-                console.log(image);
 
                 var myLatLng = new google.maps.LatLng(parseFloat(checkpoint.latitude), parseFloat(checkpoint.longitude));
 
@@ -327,11 +394,16 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
                 var contentPopup =
                     '<div class="">' +
                     '<h2 id="titel" style="text-align: left;">'+checkpoint.title+'</h2>'+
-                    '<img width="100%;" style="max-height: 350px;" class="float-leftr" src="'+imgUrl+'">' +
+                    '<div id="imageTabs">' +
+                    '</div>' +
                     '<input type="hidden" name="id" value="'+checkpoint.id+'">'+
                     '<p style="text-align: left;">'+checkpoint.description+'</p>'+
                     '</div>';
 
+                contentPopup +=
+                    '<img width="100%;" style="max-height: 350px;" class="mySlides float-center" src="'+imgUrl+'">' +
+                    '<img width="100px;" height="100px;" src="'+dirImages+'test2.jpg"></div>'+
+                    '<img width="100px;" height="100px;" src="'+dirImages+'test.jpg">';
 
                 infowindow = new google.maps.InfoWindow({
                     content: contentPopup
@@ -350,6 +422,47 @@ $jsonCheckpoints = $checkpoints->convertToJson($getCheckpoints);
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
     </script>
-</div>
+        <script>
+            jQuery(document).ready(function ($) {
+                var slideCount = $('#slider ul li').length;
+                var slideWidth = $('#slider ul li').width();
+                var slideHeight = $('#slider ul li').height();
+                var sliderUlWidth = slideCount * slideWidth;
+
+                $('#slider').css({ width: slideWidth, height: slideHeight });
+
+                $('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+
+                $('#slider ul li:last-child').prependTo('#slider ul');
+
+                function moveLeft() {
+                    $('#slider ul').animate({
+                        left: + slideWidth
+                    }, 200, function () {
+                        $('#slider ul li:last-child').prependTo('#slider ul');
+                        $('#slider ul').css('left', '');
+                    });
+                }
+
+                function moveRight() {
+                    $('#slider ul').animate({
+                        left: - slideWidth
+                    }, 200, function () {
+                        $('#slider ul li:first-child').appendTo('#slider ul');
+                        $('#slider ul').css('left', '');
+                    });
+                };
+
+                $('a.control_prev').click(function () {
+                    moveLeft();
+                });
+
+                $('a.control_next').click(function () {
+                    moveRight();
+                });
+
+            });
+
+        </script>
 </div>
 <?php get_footer() ?>

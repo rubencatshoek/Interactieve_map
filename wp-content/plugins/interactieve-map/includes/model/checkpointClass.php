@@ -430,14 +430,25 @@ class checkpointClass
     public function convertToJson ($checkpoints) {
         $jsonData = [];
 
+        $imageClass = new imageClass();
+
         foreach ($checkpoints as $item) {
+            $imageList = array();
+
+            $getImages = $imageClass->getById($item->getId());
+
+            foreach ($getImages as $singleImage) {
+                $imageList[] = $singleImage->getImage();
+            }
+
             $jsonData[] = [
                 'id' => $item->getId(),
                 'title' => $item->getTitle(),
                 'description' => $item->getDescription(),
                 'icon' => $item->getIcon(),
                 'latitude' => $item->getLatitude(),
-                'longitude' => $item->getLongitude()
+                'longitude' => $item->getLongitude(),
+                'images' => $imageList
             ];
         }
         return json_encode($jsonData);
