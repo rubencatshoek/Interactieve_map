@@ -474,12 +474,11 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <div class="grid-x cell">
         <h2>Checkpoint wijzigen</h2>
         <div class="grid-x cell">
-            <div id="map"></div>
-            <label for="title">Locatie:</label><br>
-            <input type="text" class="input-style" id="lat" name="latitude" value="<?= $singleCheckpoint->getLatitude(); ?>" readonly/>
+            <div id="map"></div><br>
+            <input type="hidden" class="input-style" id="lat" name="latitude" value="<?= $singleCheckpoint->getLatitude(); ?>" readonly/>
         </div>
         <div class="grid-x cell">
-            <input type="text" class="input-style" id="lng" name="longitude" value="<?= $singleCheckpoint->getLongitude(); ?>" readonly/>
+            <input type="hidden" class="input-style" id="lng" name="longitude" value="<?= $singleCheckpoint->getLongitude(); ?>" readonly/>
         </div>
 
         <label for="title">Titel:</label><br>

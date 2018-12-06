@@ -432,12 +432,11 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 <form method="post" enctype="multipart/form-data">
     <h2>Checkpoint aanmaken</h2>
     <div class="grid-x cell">
-        <div id="map"></div>
-        <label for="title">Locatie:</label><br>
-        <input type="text" class="input-style" id="lat" name="latitude" value="51.22762817160363" readonly/>
+        <div id="map"></div><br>
+        <input type="hidden" class="input-style" id="lat" name="latitude" value="51.22762817160363" readonly/>
     </div>
     <div class="grid-x cell">
-        <input type="text" class="input-style" id="lng" name="longitude" value="3.799993699999959" readonly/>
+        <input type="hidden" class="input-style" id="lng" name="longitude" value="3.799993699999959" readonly/>
     </div>
 
     <div class="grid-x cell">
