@@ -277,7 +277,14 @@ class checkpointClass
     }
 
     // Update into database
-    public function update($input_array, $fileName, $imageFileName) {
+    public function update($input_array, $fileName, $imageFileName, $id) {
+        $getIconById = $this->getById($id);
+
+        $getIcon = $getIconById->getIcon();
+
+        // Shows where to remove the uploaded icon file
+        $iconUploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/icons/";
+
         //Exception handeling
         try {
             //Calling $wpdb
@@ -285,6 +292,7 @@ class checkpointClass
 
             // Insert query if not empty
             if (isset($fileName) && !empty($fileName)) {
+                (!unlink($iconUploadDirectory . $getIcon));
                 $wpdb->update(
                     $wpdb->prefix . 'im_checkpoint',
                     array(
@@ -397,21 +405,33 @@ class checkpointClass
     public function delete($id) {
         $getImageById = $this->imageClass->getById($id);
 
-        // Shows where to remove the uploaded file
-        $uploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/images/";
+        $getIconById = $this->getById($id);
+
+        $getIcon = $getIconById->getIcon();
+
+        // Shows where to remove the uploaded image file
+        $imageUploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/images/";
+
+        // Shows where to remove the uploaded icon file
+        $iconUploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/icons/";
 
         // Remove files if not empty
         foreach ($getImageById as $array) {
             $getImage = $array->getImage();
-            if (!empty($getImage))
-            {
-                (!unlink($uploadDirectory . $getImage));
+            if (!empty($getImage)) {
+                (!unlink($imageUploadDirectory . $getImage));
             }
-            else
-            {
+            else {
                 echo ("Er iets fout gegaan met het verwijderen van het bestand");
             }
         }
+            if (!empty($getIcon)) {
+                (!unlink($iconUploadDirectory . $getIcon));
+            }
+            else {
+                echo ("Er iets fout gegaan met het verwijderen van het bestand");
+            }
+
 
         // Calling wpdb
         global $wpdb;

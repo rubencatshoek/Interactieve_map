@@ -41,6 +41,8 @@ $imageFileName = ($_FILES['image']['name']);
 // Count # of uploaded files in array
 $total = count($_FILES['image']['name']);
 
+$fileExists = false;
+
 // Loop through each file
 for ($i = 0; $i < $total; $i++) {
 
@@ -58,21 +60,23 @@ for ($i = 0; $i < $total; $i++) {
 
         // Check if filename already exists
         if(file_exists($newFilePath)) {
-            echo '<script>alert("Een van de bestanden word al gebruikt of bestaan al.");</script>';
-            echo '<script>window.history.back();</script>';
-            exit;
+            $fileExists = true;
+            $errors[] = "Een of meerdere gekozen afbeeldingen bestaan al." . '<br>';
+        }
+
+        // Check if filename already exists
+        if(file_exists($uploadPath)) {
+            $fileExists = true;
         }
 
         if (!in_array($imageFileExtension, $fileExtensions)) {
-            $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
+            $errors[] = "Het bestand type " . $imageFileExtension . " is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
         }
 
         // If no errors are found
-        if (empty($errors)) {
+        if (empty($errors) && $fileExists == false) {
             //Upload the file
             $didImageUpload = move_uploaded_file($tmpFilePath, $newFilePath);
-        } else {
-            echo "Kon bestand niet uploaden, probeer het opnieuw." . '<br>';
         }
     }
 }
@@ -82,18 +86,17 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
     // Check if filename already exists
     if(file_exists($uploadPath)) {
-        echo '<script>alert("Dit bestaand word al gebruikt of het bestand bestaat al.");</script>';
-        echo '<script>window.history.back();</script>';
-        exit;
+        $fileExists = true;
+        $errors[] = "De icon " . $fileName . ", bestaat al." . '<br>';
     }
 
     // If uploaded file doesn't match the available extensions
     if (! in_array($fileExtension,$fileExtensions)) {
-        $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
+        $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
     }
 
     // If no errors are found
-    if (empty($errors)) {
+    if (empty($errors) && $fileExists === false) {
         $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
         // If file has been uploaded, start create function and redirect to overview page after that
@@ -101,7 +104,8 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
             $checkpoints->create($input_array, $fileName, $imageFileName);
             echo '<script>location.href="?page=interactieve-map-admin";</script>';
             exit;
-        } else {
+        }
+        else {
             echo "Kon bestand niet uploaden, probeer het opnieuw.";
         }
     } else {
@@ -386,8 +390,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         //Set current marker
         marker = new google.maps.Marker({
             position: getLocation,
-            map: map,
-            draggable: true //make it draggable
+            map: map
         });
 
         //Listen for any clicks on the map.
@@ -399,12 +402,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
                 //Create the marker.
                 marker = new google.maps.Marker({
                     position: clickedLocation,
-                    map: map,
-                    draggable: true //make it draggable
-                });
-                //Listen for drag events!
-                google.maps.event.addListener(marker, 'dragend', function(event){
-                    markerLocation();
+                    map: map
                 });
             } else{
                 //Marker has already been added, so just change its location.

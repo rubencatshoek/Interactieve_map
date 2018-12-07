@@ -18,7 +18,7 @@ if (isset($_POST['delete_x']) && !empty($_POST['delete_x'])) {
     exit;
 }
 ?>
-<div class="grid-x">
+<div class="main small-12 medium-12 large-12 cell">
     <div class="cell">
         <h2>Checkpoint overzicht</h2>
         <?php if (!empty($get_array)) { ?>
