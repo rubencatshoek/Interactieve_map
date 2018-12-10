@@ -35,9 +35,6 @@
     <?php wp_head(); ?>
 
     <style>
-        #map {
-            height: 100%;
-            width: auto;
-        }
+        #map {height: 100%;width: auto;  }
     </style>
 </head>

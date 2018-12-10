@@ -143,6 +143,6 @@ class Interactievemap_AdminController {
 
 	function load_custom_js()
 	{
-		wp_enqueue_script('custom-js', plugins_url('interactieve-map/wp-includes/js/jquery/jquery.js', dirname(FILE)));
+		wp_enqueue_script('custom-js', plugins_url('interactieve-map/includes/jquery.js', dirname(FILE)));
 	}
 }

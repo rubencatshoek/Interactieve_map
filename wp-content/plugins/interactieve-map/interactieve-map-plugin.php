@@ -31,6 +31,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/defs.php';
 /* Register the hooks */
 register_activation_hook(__FILE__, array('Interactievemap', 'on_activation'));
 register_deactivation_hook(__FILE__, array('Interactievemap', 'on_deactivation'));
+register_activation_hook( __FILE__, array( 'Interactievemap', 'createDb' ) );
 
 class Interactievemap
 {
@@ -103,6 +104,47 @@ class Interactievemap
     public function loadViews()
     {
         include INTERACTIEVE_MAP_PLUGIN_INCLUDES_VIEWS_DIR . '/view_shortcodes.php';
+    }
+
+    public static function createDb() {
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        //Calling $wpdb;
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        //Names of the tables that will be added to the db
+        $checkpoint                  = $wpdb->prefix . "im_checkpoint";
+        $image                       = $wpdb->prefix . "im_image";
+
+        //Create the checkpoint table
+        $sql = "CREATE TABLE IF NOT EXISTS $checkpoint (
+  checkpoint_id INT NOT NULL AUTO_INCREMENT,
+  title TEXT(45) NOT NULL,
+  description LONGTEXT NULL,
+  icon_path VARCHAR(1024) NOT NULL,
+  latitude FLOAT(20,16) NOT NULL,
+  longitude FLOAT(20,16) NOT NULL,
+  PRIMARY KEY  (`checkpoint_id`))
+ENGINE = InnoDB $charset_collate";
+        dbDelta( $sql );
+
+        //Create the image table
+        $sql = "CREATE TABLE IF NOT EXISTS $image (
+  image_id INT NOT NULL AUTO_INCREMENT,
+  fk_checkpoint_id INT NOT NULL,
+  image_path VARCHAR(1024) NULL,
+  PRIMARY KEY (image_id),
+  INDEX fk_wp_im_image_wp_im_checkpoint_idx (fk_checkpoint_id ASC),
+  CONSTRAINT fk_wp_im_image_wp_im_checkpoint
+    FOREIGN KEY (fk_checkpoint_id)
+    REFERENCES $checkpoint (checkpoint_id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB $charset_collate";
+        dbDelta( $sql );
     }
 }
 // Instantiate the class
