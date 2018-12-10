@@ -137,12 +137,13 @@ class Interactievemap_AdminController {
 			$hook != 'admin_page_im_admin_checkpoint_edit') {
 			return;
 		}
-		// Enqueue the stylsheet into Wordpress
+		// Enqueue the stylesheet into Wordpress
 		wp_enqueue_style( 'custom_wp_admin_css', plugins_url( 'interactieve-map/css/stylesheet.css', dirname( FILE ) ) );
 	}
 
 	function load_custom_js()
 	{
+		// Enqueue jquery into Wordpress
 		wp_enqueue_script('custom-js', plugins_url('interactieve-map/includes/jquery.js', dirname(FILE)));
 	}
 }

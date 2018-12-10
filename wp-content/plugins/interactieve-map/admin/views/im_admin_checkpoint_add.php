@@ -119,13 +119,12 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 <script>
     //Will contain map object.
     var map;
+
     //Has the user plotted their location marker?
     var marker = false;
 
     //Function called to initialize / create the map.
-    //This is called when the page has loaded.
     function initMap() {
-
         //Map options.
         var options = {
             center: {lat: 51.2276878, lng: 3.799993699999959},
@@ -137,6 +136,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         //Create the map object.
         map = new google.maps.Map(document.getElementById('map'), options);
 
+        // Get default location
         var getLocation = {lat: 51.22762817160363, lng: 3.799993699999959};
 
         //Set current marker
@@ -175,8 +175,6 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         document.getElementById('lng').value = currentLocation.lng(); //longitude
     }
 </script>
-
-
 <form method="post" enctype="multipart/form-data">
     <h2>Checkpoint aanmaken</h2>
     <div class="grid-x cell">
@@ -225,6 +223,4 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
         }
     };
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
-</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap"></script>

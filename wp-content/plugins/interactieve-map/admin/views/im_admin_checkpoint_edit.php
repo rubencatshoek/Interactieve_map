@@ -29,9 +29,6 @@ $uploadDirectory = "/uploaded_images/icons/";
 // Store all icon foreseen and unforseen errors here
 $errors = [];
 
-// Store all image foreseen and unforseen errors here
-$imageErrors = '';
-
 // Get the only useable file extensions
 $fileExtensions = ['jpeg', 'jpg', 'png'];
 
@@ -145,7 +142,7 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
     }
 }
 
-// If clicked on delete button
+// If clicked on the single image delete button
 if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     $images->delete($input_array);
     echo '<script>window.history.back();</script>';
@@ -155,16 +152,12 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
 <script>
     //Will contain map object.
     var map;
+
     //Has the user plotted their location marker?
     var marker = false;
 
     //Function called to initialize / create the map.
-    //This is called when the page has loaded.
     function initMap() {
-
-        //The center location of our map.
-        var myLatLng = new google.maps.LatLng(51.2276878, 3.799993699999959);
-
         //Map options.
         var options = {
             center: {lat: 51.2276878, lng: 3.799993699999959},
@@ -278,6 +271,4 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
         }
     };
 </script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap">
-</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap"></script>
