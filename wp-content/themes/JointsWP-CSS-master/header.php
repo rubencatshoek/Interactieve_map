@@ -32,6 +32,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+
     <?php wp_head(); ?>
 
     <style>

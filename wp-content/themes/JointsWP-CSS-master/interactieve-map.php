@@ -19,9 +19,16 @@ $getCheckpoints = $checkpoints->getList();
 // Convert all Checkpoints to JSON
 $jsonData = $checkpoints->convertToJson($getCheckpoints);
 ?>
+<style>
+    .controls {
+        color: black;
+        font-size: 25px;
+    }
+</style>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
 <div class="inner-content">
-    <main class="main small-12 medium-12 large-12 cell" role="main" onload="initMap();">
-        <div id="map" onchange="test();"></div>
+    <main class="main small-12 medium-12 large-12 cell" role="main">
+        <div id="map"></div>
     </main>
         <script>
             // Map function on all browsers
@@ -77,17 +84,26 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
 
                     // Setup the content for the infowindow that opens when you click on a checkpoint
                     var contentPopup =
-                        '<div class="infoWindow">' +
+                        '<div class="row">'+
+                        '<div class="small-12 small-centered text-center columns">'+
                         '<h2 id="titel">' + checkpoint.title + '</h2>';
 
                     // Loop through the images
                     for (var j = 0; j < checkpoint.images.length; j++) {
-                        contentPopup += '<img class="mySlides" width="100%;" style="max-height: 350px;" src="'+dirImages+checkpoint.images[j]+'">';
+                        contentPopup += '<img class="mySlides" style=" max-width: 640px; max-height: 360px; width: 100%; margin: auto; padding: auto;" src="'+dirImages+checkpoint.images[j]+'">';
+                    }
+
+                    if (checkpoint.images.length > 1) {
+                    contentPopup +=
+                        '<a href="#" class="controls" onclick="myShow.previous()"> < </a>&nbsp;'+
+                        '<a href="#" class="controls" onclick="myShow.next()"> > </a>';
                     }
 
                     // Add the description to the content so it's below the image
                     contentPopup +=
                         '<p>' + checkpoint.description + '</p>'+
+                        '</div>'+
+                        '</div>'+
                         '</div>';
 
                     // Call a new infowindow
@@ -119,42 +135,7 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                     // Slider function
                     function slider() {
                         google.maps.event.addListener(infowindow, 'domready', function () {
-                            jQuery(document).ready(function ($) {
-                                // Clear the timeout so it starts over everytime you open an infowindow
-                                clearTimeout(imageTimeOut);
-
-                                // Get the HTML data from the class mySlides
-                                var x = document.getElementsByClassName("mySlides");
-
-                                // Set the slideindex to zero for later
-                                var slideIndex = 0;
-
-                                // Run the image carousel if there is more then zero
-                                if (x.length > 0) {
-                                    carousel();
-                                }
-
-                                // Carousel function
-                                function carousel() {
-                                    for (var i = 0; i < x.length; i++) {
-                                        // Hide the images
-                                        x[i].style.display = "none";
-                                    }
-                                    slideIndex++;
-                                    if (slideIndex > x.length) {
-                                        slideIndex = 1
-                                    }
-                                    // Only do this if there is more then zero images
-                                    if (x.length > 0) {
-                                        // Set the style to block so it displays
-                                        x[slideIndex - 1].style.display = "block";
-                                        // Change image every 3 seconds
-                                        imageTimeOut = setTimeout(function () {
-                                            carousel();
-                                        }, 3000);
-                                    }
-                                }
-                            });
+                            myShow = w3.slideshow(".mySlides", 0);
                         });
                     }
                 }
