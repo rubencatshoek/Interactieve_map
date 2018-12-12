@@ -30,13 +30,12 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <script src="wp-content/themes/JointsWP-CSS-master/assets/scripts/w3.js"></script>
 
     <?php wp_head(); ?>
 
     <style>
-        #map {height: 100%;width: auto;  }
+        #map {height: 100%;width: auto;}
+        .controls {color: black;  font-size: 25px;}
     </style>
 </head>

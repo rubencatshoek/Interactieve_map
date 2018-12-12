@@ -19,13 +19,6 @@ $getCheckpoints = $checkpoints->getList();
 // Convert all Checkpoints to JSON
 $jsonData = $checkpoints->convertToJson($getCheckpoints);
 ?>
-<style>
-    .controls {
-        color: black;
-        font-size: 25px;
-    }
-</style>
-<script src="https://www.w3schools.com/lib/w3.js"></script>
 <div class="inner-content">
     <main class="main small-12 medium-12 large-12 cell" role="main">
         <div id="map"></div>
@@ -51,9 +44,6 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
 
                 // Set empty var for later
                 var markers = [];
-
-                // Set empty var for later
-                var imageTimeOut;
 
                 // Set empty var for later
                 var infowindow;
@@ -122,23 +112,24 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                         hideAllInfoWindows(map);
                         this.infowindow.open(map, this);
                     });
-
-                    // Function to hide the previous infowindow
-                    function hideAllInfoWindows(map) {
-                        // Foreach through the markers
-                        markers.forEach(function (marker) {
-                            // Close the previous infowindow
-                            marker.infowindow.close(map, marker);
-                        });
-                    }
-
-                    // Slider function
-                    function slider() {
-                        google.maps.event.addListener(infowindow, 'domready', function () {
-                            myShow = w3.slideshow(".mySlides", 0);
-                        });
-                    }
                 }
+
+                // Function to hide the previous infowindow
+                function hideAllInfoWindows(map) {
+                    // Foreach through the markers
+                    markers.forEach(function (marker) {
+                        // Close the previous infowindow
+                        marker.infowindow.close(map, marker);
+                    });
+                }
+
+                // Slider function
+                function slider() {
+                    google.maps.event.addListener(infowindow, 'domready', function () {
+                        myShow = w3.slideshow(".mySlides", 0);
+                    });
+                }
+
             };
         </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap"></script>

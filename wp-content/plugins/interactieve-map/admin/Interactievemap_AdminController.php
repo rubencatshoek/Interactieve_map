@@ -145,5 +145,6 @@ class Interactievemap_AdminController {
 	{
 		// Enqueue jquery into Wordpress
 		wp_enqueue_script('custom-js', plugins_url('interactieve-map/includes/jquery.js', dirname(FILE)));
+		wp_enqueue_script('custom-js-load-map', plugins_url('interactieve-map/includes/js/add_map.js', dirname(FILE)));
 	}
 }

@@ -226,7 +226,7 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     </div>
     <div class="grid-x cell">
         <label for="description">Beschrijving:</label><br>
-        <textarea type="text" class="input-style" id="description" name="description" rows="5"
+        <textarea class="input-style" id="description" name="description" rows="5"
                   cols="43"><?= $singleCheckpoint->getDescription(); ?></textarea>
     </div>
     <div class="grid-x cell">
