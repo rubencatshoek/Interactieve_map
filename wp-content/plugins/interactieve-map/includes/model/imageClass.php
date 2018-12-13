@@ -80,17 +80,38 @@ class imageClass
         return $return_array;
     }
 
+    public function getImageById($id) {
+        //Calling wpdb
+        global $wpdb;
+        //Setting var as an array
+        //Database query
+        $result_array = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "im_image WHERE image_id = $id", ARRAY_A );
+        // Loop through images
+        foreach ($result_array as $array) {
+            $image_path = $array['image_path'];
+
+            // Add new object to return array.
+        }
+        // Return array
+        return $image_path;
+    }
+
     // Delete function
     public function delete($input_array) {
+
         // Shows where to remove the uploaded file
         $uploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/images/";
 
         // Get single image to delete
-        $image = $input_array['single_image'];
+        $image = $input_array['image_id'];
+
+        $imagePath = $this->getImageById($image);
+
+
 
         // Check if not empty image name
         if (!empty($image)) {
-            (!unlink($uploadDirectory . $image));
+            (!unlink($uploadDirectory . $imagePath));
         } else {
             // Echo error
             echo("Er iets fout gegaan met het verwijderen van het bestand");

@@ -143,9 +143,9 @@ if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 }
 
 // If clicked on the single image delete button
-if (isset($_POST['delete']) && !empty($_POST['delete'])) {
+if (isset($_POST['image_id']) && !empty($_POST['image_id'])) {
     $images->delete($input_array);
-    echo '<script>window.history.back();</script>';
+    echo '<script>location.reload();</script>';
     exit;
 }
 ?>
@@ -240,12 +240,10 @@ if (isset($_POST['delete']) && !empty($_POST['delete'])) {
     <div class="grid-x cell space">
         <?php
         foreach ($singleImage as $image) {
-            echo '<form method="post">' .
-                '<input type="submit" name="delete" value="Verwijderen">' .
-                $image->getImage() . '<br>' .
-                '<input type="hidden" name="single_image" value="' . $image->getImage() . '">' .
-                '<input type="hidden" name="image_id" value="' . $image->getId() . '">' .
-                '</form>';
+            ?>
+                <button type="submit" name="image_id" value="<?=$image->getId()?>">Verwijderen</button>
+               <?= $image->getImage()?><br>
+        <?php
         }; ?>
     </div>
     <br>
