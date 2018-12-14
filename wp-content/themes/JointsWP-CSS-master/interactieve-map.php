@@ -48,6 +48,9 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                 // Set empty var for later
                 var infowindow;
 
+                // Set empty var for later
+                var markerCluster;
+
                 // Loop through Checkpoints
                 for (var i = 0; i < jsonData.length; i++) {
                     // Set JSON data in variable
@@ -63,7 +66,7 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                     };
 
                     // Set the markers on the map
-                    marker = new google.maps.Marker({
+                    var marker = new google.maps.Marker({
                         position: myLatLng,
                         map: map,
                         icon: icon
@@ -104,8 +107,10 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                     // Create an infowindow 'key' in the marker
                     marker.infowindow = infowindow;
 
-                    // Call the slider function
-                    slider();
+                    // Call the slider function if there are images
+                    if (checkpoint.images.length > 0) {
+                        slider();
+                    }
 
                     // Close the other infowindow when clicked on another and open the new infowindow
                     marker.addListener('click', function () {
@@ -113,6 +118,9 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                         this.infowindow.open(map, this);
                     });
                 }
+
+                // Add a marker clusterer to manage the markers.
+                markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
                 // Function to hide the previous infowindow
                 function hideAllInfoWindows(map) {
@@ -133,5 +141,6 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
             };
         </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16bhSOI96Z6kDudIgGDbhZOyHWF6vrdw&callback=initMap"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 </div>
 <?php get_footer() ?>
