@@ -26,6 +26,13 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
         <script>
             // Map function on all browsers
             window.initMap = function(){
+
+                // Reload page if it's a first time visit
+                if (!localStorage.justOnce) {
+                    localStorage.setItem("justOnce", "true");
+                    window.location.reload();
+                }
+
                 var map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 51.2276878, lng: 3.799993699999959},
                     zoom: 15,
