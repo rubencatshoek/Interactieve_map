@@ -127,7 +127,7 @@ class Interactievemap
   icon_path VARCHAR(1024) NOT NULL,
   latitude FLOAT(20,16) NOT NULL,
   longitude FLOAT(20,16) NOT NULL,
-  PRIMARY KEY  (`checkpoint_id`))
+  PRIMARY KEY  (checkpoint_id))
 ENGINE = InnoDB $charset_collate";
         dbDelta( $sql );
 
