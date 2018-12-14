@@ -9,7 +9,7 @@ defined('ABSPATH') OR exit;
  * Description: With this plugin you can create checkpoints that show hotspots in Sas van Gent.
  * Author: Ruben Catshoek
  * Author URI:http://www.rubencatshoek.nl
- * Version: 0.0.1
+ * Version: 0.0.2
  * Text Domain: interactieve-map-plugin
  * Domain Path: languages
  *
