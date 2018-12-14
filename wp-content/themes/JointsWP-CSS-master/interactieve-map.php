@@ -34,13 +34,13 @@ $jsonData = $checkpoints->convertToJson($getCheckpoints);
                 });
 
                 // Set the plugin url for linking images
-                var pluginUrl = '<?= plugins_url(); ?>';
+                var pageUrl = '<?= get_site_url();?>';
 
                 // Set directory for icons
-                var dirIcons = pluginUrl + '/interactieve-map/admin/uploaded_images/icons/';
+                var dirIcons = pageUrl + '/wp-content/plugins/interactieve-map/admin/uploaded_images/icons/';
 
                 // Set directory for images
-                var dirImages = pluginUrl + '/interactieve-map/admin/uploaded_images/images/';
+                var dirImages = pageUrl + '/wp-content/plugins/interactieve-map/admin/uploaded_images/images/';
 
                 // Get the JSON data from PHP
                 var jsonData = <?= $jsonData ?>;
