@@ -41,8 +41,6 @@ $imageFileName = ($_FILES['image']['name']);
 // Count # of uploaded files in array
 $total = count($_FILES['image']['name']);
 
-$fileExists = false;
-
 // Loop through each file
 for ($i = 0; $i < $total; $i++) {
 
@@ -58,24 +56,13 @@ for ($i = 0; $i < $total; $i++) {
         //Setup our new file path
         $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
-        // Check if filename already exists
-        if(file_exists($newFilePath)) {
-            $fileExists = true;
-            $errors[] = "Een of meerdere gekozen afbeeldingen bestaan al." . '<br>';
-        }
-
-        // Check if filename already exists
-        if(file_exists($uploadPath)) {
-            $fileExists = true;
-        }
-
         // Check if file extension is correct
         if (!in_array($imageFileExtension, $fileExtensions)) {
             $errors[] = "Het bestand type " . $imageFileExtension . " is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
         }
 
         // If no errors are found
-        if (empty($errors) && $fileExists == false) {
+        if (empty($errors)) {
             //Upload the file
             $didImageUpload = move_uploaded_file($tmpFilePath, $newFilePath);
         }
@@ -85,19 +72,13 @@ for ($i = 0; $i < $total; $i++) {
 // If submit
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
-    // Check if filename already exists
-    if(file_exists($uploadPath)) {
-        $fileExists = true;
-        $errors[] = "De icon " . $fileName . ", bestaat al." . '<br>';
-    }
-
     // If uploaded file doesn't match the available extensions
     if (! in_array($fileExtension,$fileExtensions)) {
         $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
     }
 
     // If no errors are found
-    if (empty($errors) && $fileExists === false) {
+    if (empty($errors)) {
         $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
         // If file has been uploaded, start create function and redirect to overview page after that

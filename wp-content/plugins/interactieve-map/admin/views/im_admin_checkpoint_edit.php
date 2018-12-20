@@ -57,8 +57,6 @@ $imageFileName = ($_FILES['image']['name']);
 // Count # of uploaded files in array
 $total = count($_FILES['image']['name']);
 
-$fileExists = false;
-
 // Loop through each file
 if ($total > 0) {
     for($i=0 ; $i < $total ; $i++) {
@@ -75,23 +73,12 @@ if ($total > 0) {
             //Setup our new file path
             $newFilePath = $upOne . $imageUploadDirectory . $_FILES['image']['name'][$i];
 
-            // Check if filename already exists
-            if(file_exists($newFilePath)) {
-                $fileExists = true;
-                $errors[] = "Een of meerdere gekozen afbeeldingen bestaan al." . '<br>';
-            }
-
-            // Check if filename already exists
-            if(file_exists($uploadPath) && (!empty($fileName))) {
-                $fileExists = true;
-            }
-
             if (! in_array($imageFileExtension,$fileExtensions)) {
                 $errors[] = "Het bestand type " . $imageFileExtension . " is niet mogelijk. Upload een JPEG, JPG of PNG." . '<br>';
             }
 
             // If no errors are found
-            if (empty($errors) && $fileExists == false) {
+            if (empty($errors)) {
                 //Upload the file
                 $didImageUpload = move_uploaded_file($tmpFilePath, $newFilePath);
             }
@@ -103,26 +90,20 @@ if ($total > 0) {
 if (isset($input_array['submit']) && !empty($input_array['submit'])) {
 
     // If no image is uploaded, don't activate checks for uploaded image
-    if (empty($fileName) && $fileExists == false) {
+    if (empty($fileName)) {
         // Refer to different update if no image has been uploaded
         $checkpoints->update($input_array, $fileName, $imageFileName, $id);
         echo '<script>location.href="?page=interactieve-map-admin";</script>';
         exit;
     }
     else {
-        // Check if filename already exists
-        if(file_exists($uploadPath) && !empty($fileName)) {
-            $fileExists = true;
-            $errors[] = "De icon " . $fileName . ", bestaat al." . '<br>';
-        }
-
         // If uploaded file doesn't match the available extensions
         if (!in_array($fileExtension, $fileExtensions) && !empty($fileName)) {
             $errors[] = "Dit bestand type is niet mogelijk. Upload een JPEG, JPG of PNG.";
         }
 
         // If no errors are found
-        if (empty($errors) &&  empty($imageErrors) && $fileExists === false) {
+        if (empty($errors) && empty($imageErrors)) {
             $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
             // If file has been uploaded, start create function and redirect to overview page after that

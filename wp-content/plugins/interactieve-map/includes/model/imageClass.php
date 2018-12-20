@@ -80,6 +80,28 @@ class imageClass
         return $return_array;
     }
 
+    // Retrieve all image information
+    public function getList() {
+        //Calling wpdb
+        global $wpdb;
+        //Setting var as an array
+        $return_array = array();
+        //Database query
+        $result_array = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "im_image ORDER BY image_id", ARRAY_A);
+        // For all database results:
+        foreach ($result_array as $idx => $array) {
+            // New object
+            $image = new imageClass();
+            // Set all info
+            $image->setId($array['image_id']);
+            $image->setImage($array['image_path']);
+            // Add new object to return array.
+            $return_array[] = $image;
+        }
+        // Return the array
+        return $return_array;
+    }
+
     public function getImageById($id) {
         //Calling wpdb
         global $wpdb;
@@ -89,8 +111,6 @@ class imageClass
         // Loop through images
         foreach ($result_array as $array) {
             $image_path = $array['image_path'];
-
-            // Add new object to return array.
         }
         // Return array
         return $image_path;
@@ -107,14 +127,21 @@ class imageClass
 
         $imagePath = $this->getImageById($image);
 
+        $getImageList = $this->getList();
 
+        $keepImage = false;
+
+        foreach ($getImageList as $value) {
+            $usageImage [] = $imagePath === $value->getImage();
+            $countUsageImage = count(array_filter($usageImage));
+            if ($countUsageImage > 1) {
+                $keepImage = true;
+            }
+        }
 
         // Check if not empty image name
-        if (!empty($image)) {
+        if (!empty($image) && $keepImage == false) {
             (!unlink($uploadDirectory . $imagePath));
-        } else {
-            // Echo error
-            echo("Er iets fout gegaan met het verwijderen van het bestand");
         }
 
         // Calling wpdb

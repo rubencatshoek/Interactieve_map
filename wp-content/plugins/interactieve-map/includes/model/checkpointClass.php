@@ -282,6 +282,8 @@ class checkpointClass
 
         $getIcon = $getIconById->getIcon();
 
+        $getIconList = $this->getList();
+
         // Shows where to remove the uploaded icon file
         $iconUploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/icons/";
 
@@ -292,7 +294,24 @@ class checkpointClass
 
             // Insert query if not empty
             if (isset($fileName) && !empty($fileName)) {
-                (!unlink($iconUploadDirectory . $getIcon));
+
+                // Set variable for later usage
+                $keepIcon = false;
+
+                // Check if icon has other usage. If not, delete it from the map
+                foreach ($getIconList as $value) {
+                    $usageIcon [] = $getIcon === $value->getIcon();
+                    $countUsageIcon = count(array_filter($usageIcon));
+                    if ($countUsageIcon > 1) {
+                        $keepIcon = true;
+                    }
+                }
+
+                // Check if icon has other usage. If not, delete it from the map
+                if (!empty($getIcon) && $keepIcon == false) {
+                    (!unlink($iconUploadDirectory . $getIcon));
+                }
+
                 $wpdb->update(
                     $wpdb->prefix . 'im_checkpoint',
                     array(
@@ -415,23 +434,53 @@ class checkpointClass
         // Shows where to remove the uploaded icon file
         $iconUploadDirectory = INTERACTIEVE_MAP_PLUGIN_ADMIN_DIR . "/uploaded_images/icons/";
 
-        // Remove files if not empty
-        foreach ($getImageById as $array) {
-            $getImage = $array->getImage();
-            if (!empty($getImage)) {
-                (!unlink($imageUploadDirectory . $getImage));
-            }
-            else {
-                echo ("Er iets fout gegaan met het verwijderen van het bestand");
+        // Get the Checkpoint list
+        $getIconList = $this->getList();
+
+        // Get the Checkpoint list
+        $getImageList = $this->imageClass->getList();
+
+        // Set false for later usage
+        $keepIcon = false;
+
+        // Keep the icon if there are more fields with the same icon
+        foreach ($getIconList as $array) {
+            $useageIcon [] = $getIcon === $array->getIcon();
+            $countUsageIcon = count(array_filter($useageIcon));
+            if ($countUsageIcon > 1) {
+                $keepIcon = true;
             }
         }
-            if (!empty($getIcon)) {
-                (!unlink($iconUploadDirectory . $getIcon));
-            }
-            else {
-                echo ("Er iets fout gegaan met het verwijderen van het bestand");
-            }
 
+        // Set variable for later usage
+        $imageListArray = [];
+        $singleImageArray = [];
+
+        // Loop through the list and fill the variable
+        foreach ($getImageList as $value) {
+            $imageListArray[] = $value->getImage();
+        }
+
+        // Loop through the list and fill the variable
+        foreach ($getImageById as $value) {
+            $singleImageArray[] = $value->getImage();
+        }
+
+        // Check if array has usage in other array
+        $result = array_intersect($imageListArray, $singleImageArray);
+        $countUsageImage = array_count_values($result);
+
+        // Check if image has other usage. If not, delete it from the map
+        foreach ($countUsageImage as $key => $value) {
+            if ($value < 2) {
+                (!unlink($imageUploadDirectory . $key));
+            }
+        }
+
+        // Check if icon has other usage. If not, delete it from the map
+        if (!empty($getIcon) && $keepIcon == false) {
+            (!unlink($iconUploadDirectory . $getIcon));
+        }
 
         // Calling wpdb
         global $wpdb;
