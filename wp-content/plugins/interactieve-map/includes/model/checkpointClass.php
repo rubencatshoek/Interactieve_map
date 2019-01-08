@@ -496,6 +496,7 @@ class checkpointClass
         $wpdb->delete($table, $where, $format);
     }
 
+    //Convert data to JSON
     public function convertToJson ($checkpoints) {
         $jsonData = [];
 
@@ -521,5 +522,37 @@ class checkpointClass
             ];
         }
         return json_encode($jsonData);
+    }
+
+    //Function to import a CSV file
+    public function importCSV($file) {
+        //Open the file so it can read what's in it
+        if (($handle = fopen($file['tmp_name'], "r")) !== false) {
+
+            //Gets line from file pointer and parse for CSV fields
+            while (($data = fgetcsv($handle, 0, ";")) !== false) {
+                $title = $data[0];
+                $description = $data[1];
+
+                //Call $wpdb
+                global $wpdb;
+
+                //Insert query
+                    $wpdb->insert(
+                        $wpdb->prefix . 'im_checkpoint',
+                        array(
+                            'title' => $title,
+                            'description' => $description
+                        ),
+                        array(
+                            '%s',
+                            '%s'
+                        )
+                    );
+            }
+        }
+
+        //Return the array
+        return true;
     }
 }

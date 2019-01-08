@@ -81,6 +81,21 @@ class Interactievemap_AdminController {
 			// callback $function The function to be called to output the content for this page .
 			array( 'Interactievemap_AdminController', 'adminSubMenuIMAdd' ) );
 
+		add_submenu_page(
+		// string $parent_slug The slug name for the parent menu
+		// (or the file name of a standard WordPress admin page)
+			'interactieve-map-admin',
+			// string $page_title The text to be displayed in the title tags of the page when the menu is selected
+			__( 'csv importeren', 'interactieve-map' ),
+			// string $menu_title The text to be used for the menu
+			__( 'CSV importeren', 'interactieve-map' ),
+			// string $capability The capability required for this menu to be displayed to the user .
+			'manage_options',
+			// string $menu_slug The slug name to refer to this menu by (should be unique for this menu)
+			'im_admin_csv_import',
+			// callback $function The function to be called to output the content for this page .
+			array( 'Interactievemap_AdminController', 'adminSubMenuIMCsvImport' ) );
+
         add_submenu_page(
         // string $parent_slug The slug name for the parent menu
         // (or the file name of a standard WordPress admin page)
@@ -121,7 +136,6 @@ class Interactievemap_AdminController {
         include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_edit.php';
     }
 
-
 	/**
 	 * The submenu page to view checkpoints
 	 */
@@ -130,10 +144,19 @@ class Interactievemap_AdminController {
 		include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_checkpoint_overview.php';
 	}
 
+	/**
+	 * The submenu page to import a CSV
+	 */
+	static function adminSubMenuIMCsvImport() {
+		// include the view for this submenu page.
+		include INTERACTIEVE_MAP_PLUGIN_ADMIN_VIEWS_DIR . '/im_admin_csv_import.php';
+	}
+
 	function load_custom_style( $hook ) {
 		//If $hook isn't one of these pages it will return and stop enqueuing and registering
 		if ($hook != 'toplevel_page_interactieve-map-admin' &&
 			$hook != 'interactieve-map_page_im_admin_checkpoint_add' &&
+			$hook != 'interactieve-map_page_im_admin_csv_import' &&
 			$hook != 'admin_page_im_admin_checkpoint_edit') {
 			return;
 		}
